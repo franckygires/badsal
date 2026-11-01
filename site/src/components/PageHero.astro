@@ -1,0 +1,67 @@
+---
+import type { Locale } from "../i18n/types";
+import { localizePath } from "../i18n";
+
+interface Props {
+  locale: Locale;
+  homeLabel: string;
+  breadcrumb: string;
+  title: string;
+  sub?: string;
+  kicker?: string;
+  align?: "left" | "center";
+}
+const { locale, homeLabel, breadcrumb, title, sub, kicker, align = "left" } = Astro.props;
+---
+
+<section class:list={["page-hero", `align-${align}`]}>
+  <div class="glow glow-a"></div>
+  {align === "center" && <div class="glow glow-b"></div>}
+  <div class="container section-pad page-hero-inner">
+    <nav class="crumb" aria-label="Fil d'Ariane">
+      <a href={localizePath("/", locale)}>{homeLabel}</a>
+      <span class="sep">›</span>
+      <span class="current">{breadcrumb}</span>
+    </nav>
+    {kicker && <span class="kicker">{kicker}</span>}
+    <h1 class="hero-title">{title}</h1>
+    <span class="underline"></span>
+    {sub && <p class="hero-sub">{sub}</p>}
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    position: relative; overflow: hidden;
+    background: linear-gradient(120deg, #071a2c 0%, var(--color-primary) 60%, var(--color-primary-soft) 100%);
+    padding: 56px 0 60px;
+  }
+  .align-center { padding: 72px 0 76px; text-align: center; }
+  .page-hero-inner { position: relative; z-index: 2; }
+  .align-center .page-hero-inner { max-width: 900px; }
+
+  .glow { position: absolute; border-radius: 50%; pointer-events: none; }
+  .glow-a { right: 40px; top: -90px; width: 340px; height: 340px;
+    background: radial-gradient(circle, rgba(182, 110, 38, 0.2), transparent 70%); }
+  .glow-b { left: -80px; bottom: -120px; width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(182, 110, 38, 0.12), transparent 70%); }
+
+  .crumb { display: flex; align-items: center; gap: 9px; font-size: 13px; color: rgba(255, 255, 255, 0.7); margin-bottom: 18px; }
+  .align-center .crumb { justify-content: center; }
+  .crumb a { color: rgba(255, 255, 255, 0.7); text-decoration: none; }
+  .crumb a:hover { color: var(--color-accent-soft); }
+  .sep { color: var(--color-accent); }
+  .current { color: var(--color-accent-soft); }
+
+  .kicker { display: block; font-size: 13px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; color: var(--color-accent-soft); margin-bottom: 18px; }
+  .hero-title { font-family: var(--font-display); font-weight: 700; font-size: 48px; line-height: 1.08; color: #fff; margin: 0; }
+  .align-center .hero-title { font-size: 52px; }
+  .underline { display: inline-block; width: 64px; height: 3px; background: var(--color-accent); border-radius: 999px; margin-top: 20px; }
+  .align-center .underline { margin-top: 22px; }
+  .hero-sub { font-size: 17px; line-height: 1.6; color: rgba(255, 255, 255, 0.82); max-width: 680px; margin: 20px 0 0; }
+  .align-center .hero-sub { margin-left: auto; margin-right: auto; }
+
+  @media (max-width: 640px) {
+    .hero-title, .align-center .hero-title { font-size: 34px; }
+  }
+</style>

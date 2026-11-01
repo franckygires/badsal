@@ -1,0 +1,120 @@
+---
+import type { Locale } from "../../i18n/types";
+import { getDict } from "../../i18n";
+import { site, whatsappLink } from "../../data/site";
+import Base from "../../layouts/Base.astro";
+import PageHero from "../PageHero.astro";
+import FaqAccordion from "../FaqAccordion.astro";
+import QuoteForm from "../QuoteForm.astro";
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const dict = getDict(locale);
+const c = dict.contact;
+const title = `${c.heroTitle} — BADSAL & FILS OKIKIOLA`;
+---
+
+<Base locale={locale} dict={dict} path="/contact" active="contact" title={title} description={c.heroSub}>
+  <PageHero
+    locale={locale}
+    homeLabel={dict.common.breadcrumbHome}
+    breadcrumb={dict.nav.contact}
+    title={c.heroTitle}
+    sub={c.heroSub}
+  />
+
+  <!-- FAQ + carte contact -->
+  <section class="faq-contact section-pad">
+    <div class="container fc-grid">
+      <div>
+        <h2 class="fc-title">{c.faqTitle}</h2>
+        <FaqAccordion faqs={c.faqs} />
+      </div>
+
+      <aside class="contact-card">
+        <div class="cc-glow"></div>
+        <div class="cc-inner">
+          <h3 class="cc-title">{c.cardTitle}</h3>
+          <p class="cc-sub">{c.cardSub}</p>
+
+          <div class="cc-row">
+            <span class="cc-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            </span>
+            <div>
+              <span class="cc-label">{c.addressLabel}</span>
+              <span class="cc-value">{site.addressLines.map((l) => <>{l}<br /></>)}</span>
+            </div>
+          </div>
+
+          <div class="cc-channels">
+            <a class="cc-btn wa" href={whatsappLink()} target="_blank" rel="noopener">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.27.86 5.83 2.42a8.2 8.2 0 0 1 2.42 5.82c0 4.54-3.7 8.24-8.25 8.24a8.2 8.2 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.18 8.18 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24zm-3.4 4.43c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.69 2.58 4.1 3.62.57.25 1.02.39 1.37.5.57.18 1.1.16 1.51.1.46-.07 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06z"/></svg>
+              <span class="cc-stack"><span>WhatsApp · {site.whatsappNumbers[0]}</span><span class="cc-minor">{site.whatsappNumbers[1]} · {site.whatsappNumbers[2]}</span></span>
+            </a>
+            <button class="cc-btn we" type="button" data-wechat={site.wechatId} title="Copier l'identifiant WeChat">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.69 4C4.62 4 1.3 6.74 1.3 10.14c0 1.93 1.07 3.65 2.74 4.8l-.55 1.7 2.02-1.04c.72.22 1.45.36 2.18.4-.13-.45-.2-.92-.2-1.4 0-2.98 2.84-5.36 6.32-5.36.23 0 .45.01.67.03C13.9 6.32 11.55 4 8.69 4zm-2.4 3.2a.92.92 0 1 1 0 1.84.92.92 0 0 1 0-1.84zm4.84 0a.92.92 0 1 1 0 1.84.92.92 0 0 1 0-1.84zM14.1 9.6c-3 0-5.45 2.04-5.45 4.56s2.45 4.56 5.45 4.56c.62 0 1.23-.1 1.81-.28l1.67.86-.46-1.42c1.36-.96 2.23-2.42 2.23-4.06 0-2.52-2.45-4.56-5.25-4.56z"/></svg>
+              <span class="we-label">WeChat · {site.wechatId}</span>
+            </button>
+          </div>
+
+          <div class="cc-email">
+            <span class="cc-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm8 7L4.5 6.5h15L12 11z"/></svg>
+            </span>
+            <div>
+              <span class="cc-label">Email</span>
+              <a class="cc-mail-link" href={`mailto:${site.email}`}>{site.email}</a>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <QuoteForm locale={locale} dict={dict} />
+</Base>
+
+<style>
+  .faq-contact { background: var(--color-bg); padding-top: 88px; padding-bottom: 40px; }
+  .fc-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: start; }
+  .eyebrow { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-accent); }
+  .fc-title { font-family: var(--font-display); font-weight: 700; font-size: 30px; color: var(--color-text); margin: 0 0 28px; }
+  .bar { display: inline-block; width: 56px; height: 3px; background: var(--color-accent); border-radius: 999px; margin: 16px 0 28px; }
+
+  .contact-card { background: var(--color-primary); border: 1.5px solid rgba(184, 134, 11, 0.35); border-radius: 16px;
+    padding: 38px 34px; box-shadow: 0 18px 48px rgba(20, 48, 38, 0.18); position: relative; overflow: hidden; }
+  .cc-glow { position: absolute; right: -50px; top: -50px; width: 200px; height: 200px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(184, 134, 11, 0.18), transparent 70%); }
+  .cc-inner { position: relative; z-index: 2; }
+  .cc-title { font-family: var(--font-display); font-weight: 700; font-size: 24px; color: #fff; margin: 0 0 6px; }
+  .cc-sub { font-size: 14px; color: rgba(255, 255, 255, 0.7); margin: 0 0 26px; line-height: 1.5; }
+
+  .cc-row, .cc-email { display: flex; gap: 13px; }
+  .cc-row { margin-bottom: 24px; }
+  .cc-icon { flex-shrink: 0; width: 38px; height: 38px; border-radius: 10px; background: rgba(184, 134, 11, 0.18);
+    color: var(--color-accent-soft); display: flex; align-items: center; justify-content: center; }
+  .cc-label { display: block; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent-soft); margin-bottom: 4px; }
+  .cc-value { font-size: 14.5px; color: rgba(255, 255, 255, 0.9); line-height: 1.5; }
+
+  .cc-channels { display: flex; flex-direction: column; gap: 11px; margin-bottom: 20px; }
+  .cc-btn { display: flex; align-items: center; gap: 11px; color: #fff; font-family: var(--font-body); font-size: 15px;
+    font-weight: 600; padding: 12px 18px; border-radius: 8px; text-decoration: none; border: none; cursor: pointer;
+    transition: background var(--dur-base) var(--ease-standard); text-align: left; }
+  .cc-btn.wa { background: var(--color-whatsapp); }
+  .cc-btn.wa:hover { background: var(--color-whatsapp-deep); }
+  .cc-btn.we { background: var(--color-wechat); }
+  .cc-btn.we:hover { background: var(--color-wechat-deep); }
+  .cc-stack { display: flex; flex-direction: column; line-height: 1.2; }
+  .cc-minor { font-size: 11.5px; font-weight: 400; opacity: 0.82; }
+
+  .cc-email { padding-top: 18px; border-top: 1px solid rgba(255, 255, 255, 0.12); }
+  .cc-mail-link { font-size: 14.5px; color: #fff; text-decoration: none; }
+  .cc-mail-link:hover { color: var(--color-accent-soft); }
+
+  @media (max-width: 900px) {
+    .fc-grid { grid-template-columns: 1fr; gap: 36px; }
+  }
+</style>
+
+<!-- Le clic sur le bouton WeChat ouvre la modale QR (gérée par WeChatModal.astro). -->

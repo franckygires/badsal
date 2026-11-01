@@ -1,0 +1,98 @@
+---
+import type { Locale } from "../../i18n/types";
+import { getDict, localizePath } from "../../i18n";
+import { exportProducts, importProducts, autresProducts } from "../../data/products";
+import Base from "../../layouts/Base.astro";
+import PageHero from "../PageHero.astro";
+import ProductCard from "../ProductCard.astro";
+import GalleryCard from "../GalleryCard.astro";
+
+interface Props { locale: Locale; kind: "export" | "import"; }
+const { locale, kind } = Astro.props;
+const dict = getDict(locale);
+const isExport = kind === "export";
+const meta = isExport ? dict.exportPage : dict.importPage;
+const path = isExport ? "/exportation" : "/importation";
+const title = meta.heroTitle + " — BADSAL & FILS OKIKIOLA";
+const g = dict.exportPage.groups;
+const sections = isExport
+  ? [
+      { id: "agroalimentaire", title: g.agroalimentaire, items: exportProducts.filter((p) => p.slug !== "aliments-betail" && p.slug !== "ressources-minieres") },
+      { id: "aliments", title: g.aliments, items: exportProducts.filter((p) => p.slug === "aliments-betail") },
+      { id: "minieres", title: g.minieres, items: exportProducts.filter((p) => p.slug === "ressources-minieres") },
+    ]
+  : [{ id: undefined as string | undefined, title: undefined as string | undefined, items: importProducts }];
+const exportVisuals = {
+  agroalimentaire: "export-agro-v1",
+  aliments: "export-feed-v1",
+  minieres: "export-mining-v1",
+} as const;
+const exportProofs = {
+  fr: ["Origine & sélection", "Conditionnement adapté", "CIF / FOB sur demande"],
+  en: ["Origin & selection", "Adapted packaging", "CIF / FOB on request"],
+  zh: ["产地与精选", "适配包装", "可按需 CIF / FOB"],
+  ar: ["المنشأ والاختيار", "تعبئة مناسبة", "CIF / FOB عند الطلب"],
+}[locale];
+---
+
+<Base locale={locale} dict={dict} path={path} active={kind} title={title} description={meta.heroSub}>
+  <PageHero locale={locale} homeLabel={dict.common.breadcrumbHome} breadcrumb={meta.breadcrumb} title={meta.heroTitle} sub={meta.heroSub} />
+
+
+  <div class="catalog section-pad">
+    {sections.map((sec) => (
+      <section id={sec.id} class="cat-group">
+        <div class="container">
+          {sec.title && <div class="cat-head"><h2 class="group-title">{sec.title}</h2><span class="bar"></span></div>}
+          {isExport && sec.id && <div class="export-band">
+  <img src={"/images/" + exportVisuals[sec.id as keyof typeof exportVisuals] + ".webp"} alt={sec.title} loading="lazy" />
+  <div class="export-band-copy"><span>{dict.nav.exportLabel}</span><p>{exportProofs.join(" · ")}</p></div>
+</div>}
+{isExport ? (
+  <>
+    <div class="catalog-grid">{sec.items.map((p) => <ProductCard product={p} locale={locale} dict={dict} variant="list" />)}</div>
+
+  </>
+) : <div class="catalog-grid">{sec.items.map((p) => <ProductCard product={p} locale={locale} dict={dict} variant="list" />)}</div>}
+        </div>
+      </section>
+    ))}
+    {isExport && <section id="autres" class="cat-group"><div class="container"><div class="cat-head"><h2 class="group-title">{g.autres}</h2><span class="bar"></span></div><div class="gallery-grid">{autresProducts.map((p) => <GalleryCard product={p} locale={locale} />)}</div><div class="catalog-inline-cta"><div><span>{dict.cta}</span><h3>{meta.catalogCtaTitle}</h3></div><a href={localizePath("/contact", locale)}>{dict.cta} <b>&rarr;</b></a></div></div></section>}
+    {!isExport && <div class="container"><div class="catalog-inline-cta"><div><span>{dict.cta}</span><h3>{meta.catalogCtaTitle}</h3></div><a href={localizePath("/contact", locale)}>{dict.cta} <b>&rarr;</b></a></div></div>}
+  </div>
+
+</Base>
+
+<script>
+  const revealLinkedProduct = () => {
+    const slug = decodeURIComponent(location.hash.slice(1));
+    if (!slug) return;
+    const card = document.getElementById(slug);
+    const panel = card?.querySelector<HTMLElement>(".pc-panel");
+    const toggle = card?.querySelector<HTMLButtonElement>(".pc-toggle");
+    if (!card || !panel || !toggle) return;
+    card.setAttribute("data-open", "");
+    panel.hidden = false;
+    toggle.setAttribute("aria-expanded", "true");
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", revealLinkedProduct, { once: true });
+  else revealLinkedProduct();
+  window.addEventListener("hashchange", revealLinkedProduct);
+</script>
+
+<style>
+  .catalog { background: var(--color-bg); padding-top: 82px; padding-bottom: 94px; }.cat-group { padding-bottom: 76px; scroll-margin-top: 100px; }.cat-group:last-child { padding-bottom: 0; }.cat-head { margin-bottom: 26px; }.group-title { font-size: 29px; }.bar { margin-top: 14px; }
+  .export-band { position:relative; min-height:190px; margin:0 0 28px; overflow:hidden; background:var(--color-primary-deep); display:flex; align-items:end; }
+  .export-band::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg,rgba(8,31,53,.9),rgba(8,31,53,.38) 58%,rgba(8,31,53,.08)); }
+  .export-band img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .export-band-copy { position:relative; z-index:1; padding:28px 32px; color:#fff; }
+  .export-band-copy span { display:block; color:var(--color-accent-soft); font-size:11px; font-weight:800; letter-spacing:.15em; text-transform:uppercase; }
+  .export-band-copy p { margin:9px 0 0; font-size:15px; font-weight:600; line-height:1.5; }
+  .catalog-grid { display: grid; gap: 28px; grid-template-columns: repeat(3,1fr); align-items: start; }.gallery-grid { display: grid; gap: 24px; grid-template-columns: repeat(4,1fr); align-items: start; }
+  @media(max-width:980px){.catalog-grid{grid-template-columns:repeat(2,1fr)}.gallery-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:700px){.gallery-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:640px){.export-band{min-height:170px}.export-band-copy{padding:23px 22px}.export-band-copy p{font-size:13px}.catalog{padding-top:62px;padding-bottom:66px}.catalog-grid{grid-template-columns:1fr}.group-title{font-size:27px}}@media(max-width:420px){.gallery-grid{grid-template-columns:1fr}}  .catalog-inline-cta { margin: 32px 0; padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; gap: 28px; background: var(--color-primary-deep); border-left: 3px solid var(--color-accent); }
+  .catalog-inline-cta span { display: block; color: var(--color-accent-soft); font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+  .catalog-inline-cta h3 { margin: 7px 0 0; color: #fff; font-family: var(--font-display); font-size: 25px; line-height: 1.15; }
+  .catalog-inline-cta a { flex-shrink: 0; display: inline-flex; align-items: center; gap: 10px; padding: 13px 16px; background: var(--color-accent); color: #fff; font-size: 13px; font-weight: 800; text-decoration: none; white-space: nowrap; }
+  .catalog-inline-cta a:hover { background: var(--color-accent-deep); }
+  .catalog-inline-cta b { font-size: 18px; }
+  @media(max-width:640px){.catalog-inline-cta{margin:24px 0;padding:22px;display:block}.catalog-inline-cta h3{font-size:22px}.catalog-inline-cta a{margin-top:18px}}</style>

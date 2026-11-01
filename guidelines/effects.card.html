@@ -1,0 +1,31 @@
+<!-- @dsCard group="Spacing" viewport="700x160" name="Radius & shadow" subtitle="Corners and elevation" -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { margin: 0; background: var(--color-bg); font-family: var(--font-body); color: var(--color-text); }
+  .wrap { padding: 26px 28px; display: flex; gap: 22px; align-items: center; }
+  .item { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .tile { width: 76px; height: 56px; background: var(--color-surface); border: var(--border-hairline); }
+  .t { font-size: 11px; color: var(--color-text-faint); }
+  .r-sm { border-radius: var(--radius-sm); }
+  .r-md { border-radius: var(--radius-md); }
+  .r-lg { border-radius: var(--radius-lg); }
+  .s-sm { box-shadow: var(--shadow-sm); border: none; border-radius: var(--radius-md); }
+  .s-md { box-shadow: var(--shadow-md); border: none; border-radius: var(--radius-md); }
+  .s-lg { box-shadow: var(--shadow-lg); border: none; border-radius: var(--radius-md); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="item"><div class="tile r-sm"></div><span class="t">radius 6</span></div>
+    <div class="item"><div class="tile r-md"></div><span class="t">radius 10</span></div>
+    <div class="item"><div class="tile r-lg"></div><span class="t">radius 16</span></div>
+    <div class="item"><div class="tile s-sm"></div><span class="t">shadow sm</span></div>
+    <div class="item"><div class="tile s-md"></div><span class="t">shadow md</span></div>
+    <div class="item"><div class="tile s-lg"></div><span class="t">shadow lg</span></div>
+  </div>
+</body>
+</html>

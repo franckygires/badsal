@@ -1,0 +1,47 @@
+---
+import type { Dict, Locale } from "../i18n/types";
+import { localizePath } from "../i18n";
+
+interface Props {
+  locale: Locale;
+  dict: Dict;
+}
+const { locale, dict } = Astro.props;
+const t = dict;
+---
+
+<section class="hero">
+  <picture class="hero-media">
+    <img src="/images/hero-logistics-v2.webp" alt="Opérations logistiques et commerce international à Cotonou" loading="eager" fetchpriority="high" decoding="async" />
+  </picture>
+  <div class="hero-shade"></div>
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="hero-inner section-pad">
+    <div class="container hero-content">
+      <span class="hero-kicker">{t.home.heroKicker}</span>
+      <h1>BADSAL &amp; FILS OKIKIOLA</h1>
+      <p class="hero-subtitle">{t.home.heroSubtitle}</p>
+      <div class="hero-cta">
+        <a class="btn-secondary" href="#produits">{t.home.heroBtn2}</a>
+        <a class="btn-primary" href={localizePath("/contact", locale)}>{t.cta} <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="hero-proof" aria-label="Repères de l'entreprise"><span>Import · Export</span><i></i><span>Agro-industrie</span><i></i><span>Cotonou · Bénin</span></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { position: relative; min-height: 676px; display: grid; align-items: center; overflow: hidden; background: var(--color-primary-deep); }
+  .hero-media, .hero-media img { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .hero-media img { object-fit: cover; object-position: center; }
+  .hero-shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8,24,42,.96) 0%, rgba(8,24,42,.82) 42%, rgba(8,24,42,.24) 74%, rgba(8,24,42,.2) 100%); }
+  .hero-grid { position: absolute; inset: 0; opacity: .22; background-image: linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px); background-size: 74px 74px; mask-image: linear-gradient(90deg, black, transparent 72%); }
+  .hero-inner { position: relative; z-index: 1; width: 100%; padding-top: 92px; padding-bottom: 84px; }
+  .hero-content { width: 100%; max-width: 1180px; }.hero-content > * { max-width: 675px; }
+  .hero-kicker { display: inline-flex; align-items: center; color: #d8b267; font-size: 11px; font-weight: 800; letter-spacing: .18em; line-height: 1.2; text-transform: uppercase; }
+  h1 { margin: 21px 0 0; color: #fff; font-family: var(--font-display); font-size: clamp(44px,4.8vw,68px); font-weight: 600; letter-spacing: -.045em; line-height: 1.01; }
+  .hero-subtitle { margin: 25px 0 0; color: rgba(255,255,255,.8); font-size: 17px; line-height: 1.65; max-width: 590px; }.hero-cta { display: flex; flex-wrap: wrap; gap: 13px; margin-top: 36px; }
+  .btn-primary, .btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 52px; padding: 0 24px; border-radius: 3px; font-size: 14px; font-weight: 800; text-decoration: none; transition: transform var(--dur-base) var(--ease-standard), background var(--dur-base) var(--ease-standard); }.btn-primary { background: var(--color-accent); color: #fff; box-shadow: 0 12px 28px rgba(181,113,38,.24); }.btn-primary:hover { background: var(--color-accent-deep); transform: translateY(-2px); }.btn-secondary { border: 1px solid rgba(255,255,255,.55); color: #fff; }.btn-secondary:hover { background: rgba(255,255,255,.1); }
+  .hero-proof { display: flex; align-items: center; flex-wrap: wrap; gap: 11px; margin-top: 72px; color: rgba(255,255,255,.62); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }.hero-proof i { width: 4px; height: 4px; border-radius: 50%; background: var(--color-accent); }
+  @media (max-width: 760px) { .hero { min-height: 600px; }.hero-shade { background: linear-gradient(90deg, rgba(8,24,42,.94), rgba(8,24,42,.65)); }.hero-inner { padding-top: 72px; padding-bottom: 52px; }.hero-proof { margin-top: 52px; } }
+</style>

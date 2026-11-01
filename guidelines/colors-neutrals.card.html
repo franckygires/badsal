@@ -1,0 +1,28 @@
+<!-- @dsCard group="Colors" viewport="700x150" name="Neutrals & surfaces" subtitle="Backgrounds, text, borders" -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { margin: 0; background: var(--color-bg); font-family: var(--font-body); color: var(--color-text); }
+  .row { display: flex; gap: 0; padding: 22px; }
+  .sw { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 96px; padding: 12px; border: 1px solid var(--color-border); }
+  .sw:not(:first-child) { border-left: none; }
+  .sw:first-child { border-radius: var(--radius-md) 0 0 var(--radius-md); }
+  .sw:last-child { border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+  .name { font-size: 12px; font-weight: 600; }
+  .hex { font-size: 11px; color: var(--color-text-faint); letter-spacing: 0.03em; font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="sw" style="background:#FAFAF8"><span class="name">Background</span><span class="hex">#FAFAF8</span></div>
+    <div class="sw" style="background:#FFFFFF"><span class="name">Surface</span><span class="hex">#FFFFFF</span></div>
+    <div class="sw" style="background:#F4F4F0"><span class="name">Surface alt</span><span class="hex">#F4F4F0</span></div>
+    <div class="sw" style="background:#E5E5E0"><span class="name">Border</span><span class="hex">#E5E5E0</span></div>
+    <div class="sw" style="background:#1A1A1A"><span class="name" style="color:#fff">Text</span><span class="hex" style="color:#cfcfca">#1A1A1A</span></div>
+    <div class="sw" style="background:#5C5F58"><span class="name" style="color:#fff">Text muted</span><span class="hex" style="color:#dadbd7">#5C5F58</span></div>
+  </div>
+</body>
+</html>

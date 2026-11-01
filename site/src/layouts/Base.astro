@@ -1,0 +1,172 @@
+---
+import type { Dict, Locale } from "../i18n/types";
+import { localizePath, locales, defaultLocale, isRTL } from "../i18n";
+import { site, socialLinks } from "../data/site";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import WeChatModal from "../components/WeChatModal.astro";
+import "../styles/global.css";
+
+const ogLocaleMap: Record<Locale, string> = {
+  fr: "fr_FR",
+  en: "en_US",
+  zh: "zh_CN",
+  ar: "ar_AR",
+};
+
+interface Props {
+  locale: Locale;
+  dict: Dict;
+  /** chemin logique de la page (sans préfixe de langue), ex. "/exportation" */
+  path: string;
+  active?: "home" | "about" | "export" | "import" | "vision" | "contact";
+  title: string;
+  description?: string;
+}
+
+const { locale, dict, path, active, title, description } = Astro.props;
+const canonical = new URL(localizePath(path, locale), Astro.site).toString();
+const desc = description ?? dict.footer.tagline;
+const ogImageUrl = new URL(site.ogImage, Astro.site).toString();
+const sameAs = socialLinks();
+
+// Données structurées (JSON-LD) — aident Google à comprendre l'entreprise.
+const orgLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: site.name,
+  url: new URL("/", Astro.site).toString(),
+  logo: new URL("/favicon.svg", Astro.site).toString(),
+  image: ogImageUrl,
+  description: desc,
+  email: site.email,
+  telephone: "+2290199034344",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Akpakpa PK 5, Dandji Lot N°772",
+    addressLocality: "Cotonou",
+    addressCountry: "BJ",
+  },
+  ...(sameAs.length ? { sameAs } : {}),
+  identifier: `RCCM ${site.rccm}`,
+};
+---
+
+<!doctype html>
+<html lang={dict.htmlLang} dir={isRTL(locale) ? "rtl" : "ltr"}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    {/* Détection automatique de la langue (uniquement sur les pages FR par défaut).
+        fr/en/zh → cette langue ; toute autre langue → anglais. Un choix explicite
+        mémorisé (localStorage "lang") a la priorité. Script en tête pour limiter le flash. */}
+    {locale === defaultLocale && (
+      <script
+        is:inline
+        define:vars={{
+          paths: {
+            fr: localizePath(path, "fr"),
+            en: localizePath(path, "en"),
+            zh: localizePath(path, "zh"),
+            ar: localizePath(path, "ar"),
+          },
+        }}
+      >
+        (function () {
+          try {
+            var stored = localStorage.getItem("lang");
+            var target;
+            if (stored && paths[stored]) {
+              target = stored;
+            } else if (!stored) {
+              var navs = navigator.languages || [navigator.language || "en"];
+              var match = null;
+              for (var i = 0; i < navs.length; i++) {
+                var l = (navs[i] || "").toLowerCase();
+                if (l.indexOf("zh") === 0) { match = "zh"; break; }
+                if (l.indexOf("ar") === 0) { match = "ar"; break; }
+                if (l.indexOf("fr") === 0) { match = "fr"; break; }
+                if (l.indexOf("en") === 0) { match = "en"; break; }
+              }
+              target = match || "en";
+            }
+            if (target && target !== "fr" && paths[target]) {
+              location.replace(paths[target]);
+            }
+          } catch (e) {}
+        })();
+      </script>
+    )}
+
+    <title>{title}</title>
+    <meta name="description" content={desc} />
+    <meta name="theme-color" content="#081f35" />
+    {site.googleSiteVerification && (
+      <meta name="google-site-verification" content={site.googleSiteVerification} />
+    )}
+    <link rel="canonical" href={canonical} />
+    {locales.map((lc) => (
+      <link rel="alternate" hreflang={lc} href={new URL(localizePath(path, lc), Astro.site).toString()} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={new URL("/", Astro.site).toString()} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    {/* Open Graph (LinkedIn, Facebook, WhatsApp…) */}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content={ogLocaleMap[locale]} />
+    {locales.filter((lc) => lc !== locale).map((lc) => (
+      <meta property="og:locale:alternate" content={ogLocaleMap[lc]} />
+    ))}
+
+    {/* Twitter / X */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={desc} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    {isRTL(locale) && (
+      <link
+        href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+      />
+    )}
+
+    {/* Données structurées (entreprise) */}
+    <script type="application/ld+json" set:html={JSON.stringify(orgLd)} />
+
+    {/* Google Analytics 4 — activé seulement si `gaId` est renseigné dans site.ts */}
+    {site.gaId && (
+      <Fragment>
+        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${site.gaId}`}></script>
+        <script is:inline define:vars={{ gaId: site.gaId }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){ dataLayer.push(arguments); }
+          gtag("js", new Date());
+          gtag("config", gaId);
+        </script>
+      </Fragment>
+    )}
+  </head>
+  <body>
+    <Header locale={locale} dict={dict} path={path} active={active} />
+    <main>
+      <slot />
+    </main>
+    <Footer locale={locale} dict={dict} />
+    <WeChatModal locale={locale} />
+  </body>
+</html>

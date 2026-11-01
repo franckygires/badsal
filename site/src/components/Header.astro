@@ -1,0 +1,254 @@
+---
+import type { Dict, Locale } from "../i18n/types";
+import { localizePath, localeLabels, locales } from "../i18n";
+
+interface Props {
+  locale: Locale;
+  dict: Dict;
+  /** chemin logique de la page courante (sans préfixe de langue) */
+  path: string;
+  active?: "home" | "about" | "export" | "import" | "vision" | "contact";
+}
+
+const { locale, dict, path, active } = Astro.props;
+const L = (p: string) => localizePath(p, locale);
+const t = dict;
+---
+
+<header class="site-header">
+  <div class="bar section-pad">
+    <!-- Logo -->
+    <a href={L("/")} class="logo" aria-label={t.nav.home}>
+      <span class="logo-badge">
+        <picture>
+          <source type="image/webp" srcset="/images/logo-neutre.webp" />
+          <img src="/images/logo-neutre.jpg" alt="" width="69" height="44" />
+        </picture>
+      </span>
+      <span class="logo-text">
+        <span class="logo-name">BADSAL &amp; FILS OKIKIOLA</span>
+        <span class="logo-sub">Import · Export · Cotonou</span>
+      </span>
+    </a>
+
+    <!-- Navigation desktop -->
+    <nav class="nav-desktop" aria-label="Navigation principale">
+      <a href={L("/")} class:list={["nav-link", { active: active === "home" }]}>{t.nav.home}</a>
+      <a href={L("/qui-sommes-nous")} class:list={["nav-link", { active: active === "about" }]}>{t.nav.about}</a>
+
+      <a href={L("/exportation")} class:list={["nav-link", { active: active === "export" }]}>{t.nav.exportLabel}</a>
+
+      <a href={L("/importation")} class:list={["nav-link", { active: active === "import" }]}>{t.nav.importLabel}</a>
+
+      <a href={L("/vision")} class:list={["nav-link", { active: active === "vision" }]}>{t.nav.vision}</a>
+      <a href={L("/contact")} class:list={["nav-link", { active: active === "contact" }]}>{t.nav.contact}</a>
+    </nav>
+
+    <!-- Bloc droit : langues + CTA -->
+    <div class="header-right">
+      <div class="lang-dd">
+        <button class="lang-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Langue / Language / 语言">
+          {localeLabels[locale]} <span class="caret">▾</span>
+        </button>
+        <div class="lang-menu">
+          {locales.map((lc) => (
+            <a href={localizePath(path, lc)} class:list={["lang-opt", { on: lc === locale }]} hreflang={lc}>
+              {localeLabels[lc]}
+            </a>
+          ))}
+        </div>
+      </div>
+      <a href={L("/contact")} class="cta-btn">{t.cta}</a>
+      <button class="burger" type="button" aria-label={t.common.openMenu} aria-expanded="false" aria-controls="mobile-nav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Navigation mobile -->
+  <nav class="nav-mobile" id="mobile-nav" aria-label="Navigation mobile" hidden>
+    <a href={L("/")} class="m-link">{t.nav.home}</a>
+    <a href={L("/qui-sommes-nous")} class="m-link">{t.nav.about}</a>
+    <a href={L("/exportation")} class="m-link">{t.nav.exportLabel}</a>
+    <a href={L("/importation")} class="m-link">{t.nav.importLabel}</a>
+    <a href={L("/vision")} class="m-link">{t.nav.vision}</a>
+    <a href={L("/contact")} class="m-link">{t.nav.contact}</a>
+    <a href={L("/contact")} class="cta-btn m-cta">{t.cta}</a>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: #ffffff; /* en-tête volontairement en blanc pur (cf. demande) */
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.02);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 84px;
+    gap: 18px;
+  }
+
+  /* ---- Logo ---- */
+  .logo { display: flex; align-items: center; gap: 14px; text-decoration: none; flex-shrink: 0; }
+  .logo-badge { display: flex; align-items: center; flex-shrink: 0; }
+  .logo-badge picture { display: flex; }
+  .logo-badge img { height: 42px; width: auto; display: block; }
+  .logo-text { display: flex; flex-direction: column; line-height: 1.05; }
+  .logo-name { font-family: var(--font-display); font-weight: 700; font-size: 18px; letter-spacing: 0.02em; color: var(--color-accent); }
+  .logo-sub { font-size: 10px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--color-text-faint); margin-top: 3px; }
+
+  /* ---- Nav desktop ---- */
+  .nav-desktop { display: flex; align-items: center; gap: 26px; }
+  .nav-link {
+    font-size: 15px; font-weight: 500; color: var(--color-text); text-decoration: none;
+    display: inline-flex; align-items: center; gap: 5px; padding: 8px 0;
+    border-bottom: 2px solid transparent; white-space: nowrap;
+  }
+  .nav-link:hover { color: var(--color-primary); }
+  .nav-link.active { color: var(--color-primary); font-weight: 600; border-bottom-color: var(--color-accent); }
+  .caret { font-size: 10px; color: var(--color-accent); }
+
+  .nav-dd { position: relative; }
+  .dd-panel {
+    position: absolute; top: calc(100% + 12px); left: 50%; transform: translateX(-50%) translateY(6px);
+    min-width: 244px; background: var(--color-surface); border: 1px solid var(--color-border);
+    border-radius: 10px; box-shadow: 0 14px 38px rgba(20, 48, 38, 0.14); padding: 8px; z-index: 60;
+    opacity: 0; visibility: hidden; transition: opacity var(--dur-base) var(--ease-standard), transform var(--dur-base) var(--ease-standard);
+  }
+  .nav-dd:hover .dd-panel,
+  .nav-dd:focus-within .dd-panel { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+  .dd-item {
+    display: block; padding: 10px 14px; font-size: 14px; color: var(--color-text);
+    text-decoration: none; border-radius: 6px;
+  }
+  .dd-item:hover { background: var(--color-primary-tint); }
+
+  /* ---- Bloc droit ---- */
+  .header-right { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+  .lang-dd { position: relative; }
+  .lang-toggle {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-body); font-size: 13px; font-weight: 600;
+    color: var(--color-text); background: transparent;
+    border: 1px solid var(--color-border); border-radius: 999px;
+    padding: 7px 12px; cursor: pointer; white-space: nowrap;
+  }
+  .lang-toggle .caret { font-size: 10px; color: var(--color-accent); }
+  .lang-menu {
+    position: absolute; top: calc(100% + 8px); inset-inline-end: 0; min-width: 116px;
+    background: var(--color-surface); border: 1px solid var(--color-border);
+    border-radius: 10px; box-shadow: 0 14px 38px rgba(20, 48, 38, 0.14); padding: 6px; z-index: 60;
+    opacity: 0; visibility: hidden; transform: translateY(6px);
+    transition: opacity var(--dur-base) var(--ease-standard), transform var(--dur-base) var(--ease-standard);
+  }
+  .lang-dd:hover .lang-menu,
+  .lang-dd:focus-within .lang-menu,
+  .lang-dd.open .lang-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+  .lang-opt {
+    display: block; padding: 8px 12px; font-size: 14px; font-weight: 500;
+    color: var(--color-text); text-decoration: none; border-radius: 6px; white-space: nowrap;
+  }
+  .lang-opt:hover { background: var(--color-primary-tint); }
+  .lang-opt.on { color: var(--color-primary); font-weight: 700; background: var(--color-primary-tint); }
+  .cta-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--color-accent); color: #fff; font-size: 14px; font-weight: 600;
+    padding: 12px 22px; border-radius: 6px; text-decoration: none;
+    box-shadow: 0 2px 8px rgba(184, 134, 11, 0.28); white-space: nowrap;
+    transition: background var(--dur-base) var(--ease-standard);
+  }
+  .cta-btn:hover { background: var(--color-accent-deep); }
+
+  /* ---- Burger (mobile only) ---- */
+  .burger { display: none; flex-direction: column; gap: 5px; width: 42px; height: 42px;
+    align-items: center; justify-content: center; background: transparent; border: 1px solid var(--color-border);
+    border-radius: 8px; cursor: pointer; }
+  .burger span { width: 20px; height: 2px; background: var(--color-primary); border-radius: 2px; transition: transform var(--dur-base), opacity var(--dur-base); }
+  .burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ---- Nav mobile ---- */
+  .nav-mobile { display: none; flex-direction: column; padding: 12px 20px 24px; border-top: 1px solid var(--color-border); background: var(--color-surface); }
+  .m-link, .m-dd > summary { font-size: 16px; font-weight: 600; color: var(--color-text); text-decoration: none; padding: 14px 4px; border-bottom: 1px solid var(--color-border); cursor: pointer; list-style: none; }
+  .m-dd > summary::-webkit-details-marker { display: none; }
+  .m-dd > summary::after { content: "+"; float: right; color: var(--color-accent); }
+  .m-dd[open] > summary::after { content: "−"; }
+  .m-sub { display: block; font-size: 14px; color: var(--color-text-muted); text-decoration: none; padding: 11px 16px; }
+  .m-sub.strong { color: var(--color-primary); font-weight: 600; }
+  .m-cta { margin-top: 18px; padding: 14px 22px; }
+
+  /* Écrans intermédiaires : on resserre la nav avant de basculer en menu mobile. */
+  @media (max-width: 1180px) {
+    .nav-desktop { gap: 18px; }
+    .nav-link { font-size: 14px; }
+  }
+
+  /* ---- Bascule desktop / mobile ---- */
+  @media (max-width: 1040px) {
+    .nav-desktop { display: none; }
+    .cta-btn:not(.m-cta) { display: none; }
+    .burger { display: flex; }
+    .site-header.open .nav-mobile { display: flex; }
+    .logo-sub { display: none; }
+    /* le logo doit pouvoir rétrécir/retourner à la ligne pour ne pas pousser
+       le bouton menu hors de l'écran */
+    .logo { flex-shrink: 1; min-width: 0; }
+    .logo-text { min-width: 0; }
+    .logo-name { font-size: 15px; }
+    .header-right { gap: 10px; }
+    .burger { flex-shrink: 0; }
+  }
+  @media (max-width: 600px) {
+    .logo-badge img { height: 36px; }
+  }
+  @media (max-width: 380px) {
+    .logo-name { font-size: 13px; letter-spacing: 0; }
+    .logo-badge img { height: 32px; }
+  }
+</style>
+
+<script>
+  // Menu hamburger (mobile)
+  document.querySelectorAll(".burger").forEach((burger) => {
+    const hdr = burger.closest(".site-header");
+    const panel = hdr && hdr.querySelector(".nav-mobile");
+    burger.addEventListener("click", () => {
+      const open = hdr ? hdr.classList.toggle("open") : false;
+      burger.setAttribute("aria-expanded", String(open));
+      if (panel) panel.hidden = !open;
+    });
+  });
+
+  // Sélecteur de langue (ouverture au clic, utile sur tactile)
+  document.querySelectorAll(".lang-toggle").forEach((btn) => {
+    const dd = btn.closest(".lang-dd");
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const open = dd ? dd.classList.toggle("open") : false;
+      btn.setAttribute("aria-expanded", String(open));
+    });
+  });
+
+  // Mémorise le choix explicite de langue (prioritaire sur la détection auto)
+  document.querySelectorAll(".lang-opt").forEach((opt) => {
+    opt.addEventListener("click", () => {
+      try {
+        localStorage.setItem("lang", opt.getAttribute("hreflang") || "");
+      } catch (e) {}
+    });
+  });
+  document.addEventListener("click", () => {
+    document.querySelectorAll(".lang-dd.open").forEach((dd) => {
+      dd.classList.remove("open");
+      const t = dd.querySelector(".lang-toggle");
+      if (t) t.setAttribute("aria-expanded", "false");
+    });
+  });
+</script>

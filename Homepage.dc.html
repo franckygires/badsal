@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #FAFAF8; }
+  @keyframes heroFade { from { opacity: 0; } to { opacity: 1; } }
+</style>
+</helmet>
+
+<div style="width:1440px; margin:0 auto; background:#FAFAF8; color:#1A1A1A; font-family:'Inter',sans-serif; overflow:hidden;">
+
+  <!-- ===================== HEADER ===================== -->
+  <header style="position:sticky; top:0; z-index:50; background:#FFFFFF; border-bottom:1px solid #E5E5E0; box-shadow:0 1px 0 rgba(0,0,0,0.02);">
+    <div style="display:flex; align-items:center; justify-content:space-between; height:84px; padding:0 48px;">
+      <!-- logo -->
+      <a href="#" style="display:flex; align-items:center; gap:14px; text-decoration:none;">
+        <span style="width:46px; height:46px; background:#1B4332; border-radius:6px; display:flex; align-items:center; justify-content:center; color:#B8860B; font-family:'Playfair Display',serif; font-weight:700; font-size:22px;">B</span>
+        <span style="display:flex; flex-direction:column; line-height:1.05;">
+          <span style="font-family:'Playfair Display',serif; font-weight:700; font-size:18px; letter-spacing:0.02em; color:#B8860B;">BADSAL &amp; FILS OKIKIOLA</span>
+          <span style="font-size:10px; letter-spacing:0.26em; text-transform:uppercase; color:#8A8C84; margin-top:3px;">Import &middot; Export &middot; Cotonou</span>
+        </span>
+      </a>
+      <!-- nav -->
+      <nav style="display:flex; align-items:center; gap:26px;">
+        <a href="#" style="font-size:15px; font-weight:500; color:#1A1A1A; text-decoration:none;">{{ t.nav.home }}</a>
+        <a href="#" style="font-size:15px; font-weight:500; color:#1A1A1A; text-decoration:none;">{{ t.nav.about }}</a>
+
+        <div style="position:relative;" onMouseEnter="{{ onExportEnter }}" onMouseLeave="{{ onExportLeave }}">
+          <span style="font-size:15px; font-weight:500; color:#1A1A1A; cursor:pointer; display:inline-flex; align-items:center; gap:5px;">{{ t.nav.export }} <span style="font-size:10px; color:#B8860B;">&#9660;</span></span>
+          <sc-if value="{{ exportOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute; top:calc(100% + 14px); left:50%; transform:translateX(-50%); min-width:230px; background:#FFFFFF; border:1px solid #E5E5E0; border-radius:10px; box-shadow:0 14px 38px rgba(20,48,38,0.14); padding:8px; z-index:60;">
+              <sc-for list="{{ exportMenu }}" as="item" hint-placeholder-count="4">
+                <a href="#" style="display:block; padding:10px 14px; font-size:14px; color:#1A1A1A; text-decoration:none; border-radius:6px;" style-hover="background:#EAF0EC;">{{ item }}</a>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="position:relative;" onMouseEnter="{{ onImportEnter }}" onMouseLeave="{{ onImportLeave }}">
+          <span style="font-size:15px; font-weight:500; color:#1A1A1A; cursor:pointer; display:inline-flex; align-items:center; gap:5px;">{{ t.nav.import }} <span style="font-size:10px; color:#B8860B;">&#9660;</span></span>
+          <sc-if value="{{ importOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute; top:calc(100% + 14px); left:50%; transform:translateX(-50%); min-width:230px; background:#FFFFFF; border:1px solid #E5E5E0; border-radius:10px; box-shadow:0 14px 38px rgba(20,48,38,0.14); padding:8px; z-index:60;">
+              <sc-for list="{{ importMenu }}" as="item" hint-placeholder-count="3">
+                <a href="#" style="display:block; padding:10px 14px; font-size:14px; color:#1A1A1A; text-decoration:none; border-radius:6px;" style-hover="background:#EAF0EC;">{{ item }}</a>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+
+        <a href="#" style="font-size:15px; font-weight:500; color:#1A1A1A; text-decoration:none;">{{ t.nav.vision }}</a>
+        <a href="#" style="font-size:15px; font-weight:500; color:#1A1A1A; text-decoration:none;">{{ t.nav.contact }}</a>
+      </nav>
+      <!-- right -->
+      <div style="display:flex; align-items:center; gap:18px;">
+        <div style="display:flex; align-items:center; border:1px solid #E5E5E0; border-radius:999px; overflow:hidden;">
+          <button onClick="{{ setFR }}" style="border:none; cursor:pointer; font-family:'Inter',sans-serif; font-size:13px; font-weight:600; padding:7px 13px; background:{{ frBg }}; color:{{ frFg }};">FR</button>
+          <button onClick="{{ setEN }}" style="border:none; cursor:pointer; font-family:'Inter',sans-serif; font-size:13px; font-weight:600; padding:7px 13px; background:{{ enBg }}; color:{{ enFg }};">EN</button>
+        </div>
+        <a href="#" style="display:inline-flex; align-items:center; justify-content:center; background:#B8860B; color:#FFFFFF; font-size:14px; font-weight:600; padding:12px 22px; border-radius:6px; text-decoration:none; box-shadow:0 2px 8px rgba(184,134,11,0.28);" style-hover="background:#936A08;">{{ t.cta }}</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== HERO ===================== -->
+  <section style="position:relative; height:640px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+    <div key="{{ slide }}" style="position:absolute; inset:0; background:{{ heroBg }}; animation:heroFade 900ms ease;"></div>
+    <div style="position:absolute; inset:0; background:{{ overlayBg }};"></div>
+    <div style="position:absolute; right:60px; top:60px; width:420px; height:420px; border-radius:50%; background:radial-gradient(circle, rgba(184,134,11,0.18), transparent 70%); pointer-events:none;"></div>
+
+    <div style="position:relative; z-index:2; max-width:920px; text-align:center; padding:0 40px; color:#FFFFFF;">
+      <span style="display:inline-block; font-size:13px; font-weight:600; letter-spacing:0.24em; text-transform:uppercase; color:#D8A93A; margin-bottom:22px;">{{ t.heroKicker }}</span>
+      <h1 style="font-family:'Playfair Display',serif; font-weight:700; font-size:66px; line-height:1.06; letter-spacing:-0.01em; margin:0;">BADSAL &amp; FILS OKIKIOLA</h1>
+      <p style="font-size:21px; line-height:1.55; color:rgba(255,255,255,0.88); max-width:660px; margin:24px auto 0;">{{ t.heroSubtitle }}</p>
+      <div style="display:flex; gap:16px; justify-content:center; margin-top:38px;">
+        <a href="#" style="display:inline-flex; align-items:center; justify-content:center; background:#B8860B; color:#FFFFFF; font-size:16px; font-weight:600; padding:15px 30px; border-radius:6px; text-decoration:none; box-shadow:0 4px 16px rgba(184,134,11,0.35);" style-hover="background:#936A08;">{{ t.cta }}</a>
+        <a href="#" style="display:inline-flex; align-items:center; justify-content:center; background:transparent; color:#FFFFFF; font-size:16px; font-weight:600; padding:15px 30px; border-radius:6px; text-decoration:none; border:1.5px solid rgba(255,255,255,0.7);" style-hover="background:rgba(255,255,255,0.12);">{{ t.heroBtn2 }}</a>
+      </div>
+    </div>
+
+    <div style="position:absolute; bottom:28px; left:50%; transform:translateX(-50%); z-index:3; display:flex; gap:11px;">
+      <sc-for list="{{ dots }}" as="dot" hint-placeholder-count="3">
+        <button onClick="{{ dot.onClick }}" style="width:11px; height:11px; border-radius:50%; border:none; cursor:pointer; padding:0; transition:background 200ms ease, width 200ms ease; background:{{ dot.color }}; width:{{ dot.width }};"></button>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ===================== THREE PILLARS ===================== -->
+  <section style="background:#1B4332; padding:84px 48px;">
+    <div style="max-width:1200px; margin:0 auto; display:grid; grid-template-columns:repeat(3, 1fr); gap:36px;">
+      <sc-for list="{{ pillars }}" as="pillar" hint-placeholder-count="3">
+        <div style="text-align:center; padding:8px 16px;">
+          <div style="font-size:46px; line-height:1; margin-bottom:18px;">{{ pillar.icon }}</div>
+          <span style="display:block; width:40px; height:3px; background:#B8860B; border-radius:999px; margin:0 auto 20px;"></span>
+          <h3 style="font-family:'Playfair Display',serif; font-weight:700; font-size:23px; color:#FFFFFF; margin:0 0 12px;">{{ pillar.title }}</h3>
+          <p style="font-size:15.5px; line-height:1.6; color:rgba(255,255,255,0.78); margin:0; max-width:320px; margin-left:auto; margin-right:auto;">{{ pillar.desc }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ===================== PRODUITS PHARES ===================== -->
+  <section style="background:#FAFAF8; padding:96px 48px;">
+    <div style="max-width:1200px; margin:0 auto;">
+      <div style="text-align:center; margin-bottom:52px;">
+        <h2 style="font-family:'Playfair Display',serif; font-weight:700; font-size:38px; color:#1A1A1A; margin:0;">{{ t.productsTitle }}</h2>
+        <span style="display:inline-block; width:64px; height:3px; background:#B8860B; border-radius:999px; margin-top:18px;"></span>
+        <p style="font-size:16px; line-height:1.6; color:#5C5F58; max-width:560px; margin:18px auto 0;">{{ t.productsSub }}</p>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:24px;">
+        <sc-for list="{{ products }}" as="product" hint-placeholder-count="4">
+          <article style="display:flex; flex-direction:column; background:#FFFFFF; border:1px solid #E5E5E0; border-radius:12px; overflow:hidden; box-shadow:0 2px 6px rgba(26,26,26,0.06);">
+            <div style="aspect-ratio:4/3; background:linear-gradient(135deg,#2C5A45,#143026); display:flex; align-items:flex-end; padding:14px;">
+              <span style="font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.55);">Photo produit</span>
+            </div>
+            <div style="padding:20px 20px 22px; display:flex; flex-direction:column; gap:10px; flex:1;">
+              <h3 style="font-family:'Playfair Display',serif; font-weight:700; font-size:19px; color:#1A1A1A; margin:0;">{{ product.name }}</h3>
+              <p style="font-size:14px; line-height:1.5; color:#5C5F58; margin:0; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; flex:1;">{{ product.desc }}</p>
+              <a href="#" style="align-self:flex-start; margin-top:4px; display:inline-flex; align-items:center; gap:7px; font-size:13px; font-weight:600; color:#1B4332; text-decoration:none; padding:9px 16px; border:1.5px solid #1B4332; border-radius:6px;" style-hover="background:#EAF0EC;">{{ t.productBtn }} &rarr;</a>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== INDUSTRIALISATION BANNER ===================== -->
+  <section style="background:#143026; padding:88px 48px; position:relative; overflow:hidden;">
+    <div style="position:absolute; left:-80px; bottom:-120px; width:360px; height:360px; border-radius:50%; background:radial-gradient(circle, rgba(184,134,11,0.16), transparent 70%);"></div>
+    <div style="max-width:840px; margin:0 auto; text-align:center; position:relative; z-index:2;">
+      <div style="font-size:38px; color:#B8860B; margin-bottom:18px;">&#10022;</div>
+      <span style="display:block; font-size:13px; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:#D8A93A; margin-bottom:20px;">{{ t.bannerKicker }}</span>
+      <p style="font-family:'Playfair Display',serif; font-style:italic; font-weight:500; font-size:27px; line-height:1.5; color:#FFFFFF; margin:0;">&ldquo;{{ t.bannerText }}&rdquo;</p>
+      <a href="#" style="display:inline-flex; align-items:center; justify-content:center; margin-top:34px; background:transparent; color:#D8A93A; font-size:15px; font-weight:600; padding:13px 30px; border-radius:6px; text-decoration:none; border:1.5px solid #B8860B;" style-hover="background:rgba(184,134,11,0.12);">{{ t.bannerBtn }}</a>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer style="background:#0F2A1F; color:rgba(255,255,255,0.72); padding:64px 48px 0;">
+    <div style="max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1.4fr 1fr 1.2fr; gap:48px; padding-bottom:48px;">
+      <!-- brand -->
+      <div>
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px;">
+          <span style="width:42px; height:42px; background:#1B4332; border:1px solid rgba(184,134,11,0.4); border-radius:6px; display:flex; align-items:center; justify-content:center; color:#B8860B; font-family:'Playfair Display',serif; font-weight:700; font-size:20px;">B</span>
+          <span style="font-family:'Playfair Display',serif; font-weight:700; font-size:17px; color:#B8860B; line-height:1.2;">BADSAL &amp; FILS<br/>OKIKIOLA</span>
+        </div>
+        <p style="font-size:14px; line-height:1.65; color:rgba(255,255,255,0.6); margin:0; max-width:320px;">{{ t.footerTagline }}</p>
+      </div>
+      <!-- nav -->
+      <div>
+        <h4 style="font-size:12px; letter-spacing:0.16em; text-transform:uppercase; color:#D8A93A; margin:0 0 18px;">{{ t.footerNavTitle }}</h4>
+        <div style="display:flex; flex-direction:column; gap:11px;">
+          <sc-for list="{{ footerNav }}" as="link" hint-placeholder-count="6">
+            <a href="#" style="font-size:14px; color:rgba(255,255,255,0.72); text-decoration:none;" style-hover="color:#D8A93A;">{{ link }}</a>
+          </sc-for>
+        </div>
+      </div>
+      <!-- contact -->
+      <div>
+        <h4 style="font-size:12px; letter-spacing:0.16em; text-transform:uppercase; color:#D8A93A; margin:0 0 18px;">{{ t.footerContactTitle }}</h4>
+        <p style="font-size:14px; color:rgba(255,255,255,0.7); margin:0 0 16px; line-height:1.6;">Cotonou, B&eacute;nin</p>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <a href="#" style="display:inline-flex; align-items:center; gap:9px; background:#25D366; color:#FFFFFF; font-size:14px; font-weight:600; padding:10px 16px; border-radius:6px; text-decoration:none; width:fit-content;" style-hover="background:#1EBE5A;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.27.86 5.83 2.42a8.2 8.2 0 0 1 2.42 5.82c0 4.54-3.7 8.24-8.25 8.24a8.2 8.2 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.18 8.18 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24zm-3.4 4.43c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.69 2.58 4.1 3.62.57.25 1.02.39 1.37.5.57.18 1.1.16 1.51.1.46-.07 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06z"/></svg>
+            +229 0199034344
+          </a>
+          <a href="#" style="display:inline-flex; align-items:center; gap:9px; background:#07C160; color:#FFFFFF; font-size:14px; font-weight:600; padding:10px 16px; border-radius:6px; text-decoration:none; width:fit-content;" style-hover="background:#06A954;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M8.69 4C4.62 4 1.3 6.74 1.3 10.14c0 1.93 1.07 3.65 2.74 4.8l-.55 1.7 2.02-1.04c.72.22 1.45.36 2.18.4-.13-.45-.2-.92-.2-1.4 0-2.98 2.84-5.36 6.32-5.36.23 0 .45.01.67.03C13.9 6.32 11.55 4 8.69 4zm-2.4 3.2a.92.92 0 1 1 0 1.84.92.92 0 0 1 0-1.84zm4.84 0a.92.92 0 1 1 0 1.84.92.92 0 0 1 0-1.84zM14.1 9.6c-3 0-5.45 2.04-5.45 4.56s2.45 4.56 5.45 4.56c.62 0 1.23-.1 1.81-.28l1.67.86-.46-1.42c1.36-.96 2.23-2.42 2.23-4.06 0-2.52-2.45-4.56-5.25-4.56z"/></svg>
+            +86 17502105979
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- bottom bar -->
+    <div style="border-top:1px solid rgba(255,255,255,0.1); padding:22px 0 30px; display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap;">
+      <span style="display:inline-flex; align-items:center; gap:8px; background:rgba(184,134,11,0.14); border:1px solid rgba(184,134,11,0.4); color:#D8A93A; font-size:12.5px; font-weight:500; padding:7px 14px; border-radius:999px; letter-spacing:0.02em;">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.7 1.1 2-.2.6 1.9 1.6 1.2-.7 1.9.7 1.9-1.6 1.2-.6 1.9-2-.2L8 14.5l-1.7-1.1-2 .2-.6-1.9L2.1 10.5l.7-1.9-.7-1.9 1.6-1.2.6-1.9 2 .2L8 1.5z" fill="currentColor" opacity="0.25"/><path d="M5.6 8.1l1.6 1.6 3.3-3.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        RCCM : N&deg;RB/PNO/18 B 2200 &nbsp;|&nbsp; IFU : 320080103218
+      </span>
+      <span style="font-size:13px; color:rgba(255,255,255,0.45);">&copy; 2026 BADSAL &amp; FILS OKIKIOLA &mdash; Cotonou, B&eacute;nin</span>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900},&quot;defaultLang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;FR&quot;,&quot;EN&quot;],&quot;default&quot;:&quot;FR&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;},&quot;autoplay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Hero&quot;,&quot;label&quot;:&quot;Auto-advance hero&quot;},&quot;heroDim&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:0.6,&quot;min&quot;:0.2,&quot;max&quot;:0.85,&quot;step&quot;:0.05,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Hero&quot;,&quot;label&quot;:&quot;Hero overlay dim&quot;}}">
+class Component extends DCLogic {
+  state = { lang: null, slide: 0, openMenu: null };
+
+  T = {
+    FR: {
+      nav: { home: "Accueil", about: "Qui sommes-nous", export: "Exportation", import: "Importation", vision: "Vision & Industrialisation", contact: "Contact" },
+      cta: "Demander un devis",
+      heroKicker: "Commerce international \u00b7 Agro-industrie \u00b7 B\u00e9nin",
+      heroSubtitle: "Votre partenaire de confiance dans le commerce international et l'agro-industrie au B\u00e9nin",
+      heroBtn2: "D\u00e9couvrir nos produits",
+      productsTitle: "Nos Produits Phares",
+      productsSub: "Des fili\u00e8res b\u00e9ninoises sourc\u00e9es, transform\u00e9es et conditionn\u00e9es selon les normes internationales.",
+      productBtn: "En savoir plus",
+      bannerKicker: "Cap vers l'industrialisation",
+      bannerText: "Au-del\u00e0 du n\u00e9goce, BADSAL & FILS OKIKIOLA s'engage dans la transformation locale pour cr\u00e9er de la valeur ajout\u00e9e et des emplois durables au B\u00e9nin.",
+      bannerBtn: "Notre Vision",
+      footerTagline: "Votre partenaire de confiance dans le commerce international et l'agro-industrie au B\u00e9nin.",
+      footerNavTitle: "Navigation",
+      footerContactTitle: "Contact",
+      exportMenu: ["Ananas & D\u00e9riv\u00e9s", "Karit\u00e9 & D\u00e9riv\u00e9s", "Manioc & D\u00e9riv\u00e9s", "Noix de Palme & D\u00e9riv\u00e9s"],
+      importMenu: ["Mat\u00e9riaux de construction", "\u00c9nergie & Mobilit\u00e9", "\u00c9quipements industriels"],
+      pillars: [
+        { icon: "\ud83c\udf3f", title: "Agro-industrie & Exportation", desc: "Production, transformation et exportation de produits agricoles b\u00e9ninois vers les march\u00e9s internationaux." },
+        { icon: "\ud83c\udfd7\ufe0f", title: "Mat\u00e9riaux de Construction & Importation", desc: "Importation de mat\u00e9riaux et d'\u00e9quipements de construction pour les projets d'infrastructure." },
+        { icon: "\u26a1", title: "\u00c9nergie & Mobilit\u00e9", desc: "Solutions \u00e9nerg\u00e9tiques et de mobilit\u00e9 durables au service du d\u00e9veloppement local." }
+      ],
+      products: [
+        { name: "Ananas & D\u00e9riv\u00e9s", desc: "Ananas frais, jus et fruits s\u00e9ch\u00e9s calibr\u00e9s et conditionn\u00e9s pour l'export." },
+        { name: "Karit\u00e9 & D\u00e9riv\u00e9s", desc: "Beurre de karit\u00e9 brut et raffin\u00e9, tra\u00e7abilit\u00e9 compl\u00e8te depuis les coop\u00e9ratives." },
+        { name: "Manioc & D\u00e9riv\u00e9s", desc: "Gari, tapioca et farine de manioc transform\u00e9s selon les normes internationales." },
+        { name: "Noix de Palme & D\u00e9riv\u00e9s", desc: "Huile de palme et d\u00e9riv\u00e9s issus d'une fili\u00e8re responsable et contr\u00f4l\u00e9e." }
+      ]
+    },
+    EN: {
+      nav: { home: "Home", about: "About us", export: "Export", import: "Import", vision: "Vision & Industrialization", contact: "Contact" },
+      cta: "Request a quote",
+      heroKicker: "International trade \u00b7 Agro-industry \u00b7 Benin",
+      heroSubtitle: "Your trusted partner in international trade and agro-industry in Benin",
+      heroBtn2: "Discover our products",
+      productsTitle: "Our Flagship Products",
+      productsSub: "Beninese supply chains, sourced, processed and packaged to international standards.",
+      productBtn: "Learn more",
+      bannerKicker: "Toward industrialization",
+      bannerText: "Beyond trading, BADSAL & FILS OKIKIOLA is committed to local processing to create added value and lasting jobs in Benin.",
+      bannerBtn: "Our Vision",
+      footerTagline: "Your trusted partner in international trade and agro-industry in Benin.",
+      footerNavTitle: "Navigation",
+      footerContactTitle: "Contact",
+      exportMenu: ["Pineapple & Derivatives", "Shea & Derivatives", "Cassava & Derivatives", "Palm Nut & Derivatives"],
+      importMenu: ["Construction materials", "Energy & Mobility", "Industrial equipment"],
+      pillars: [
+        { icon: "\ud83c\udf3f", title: "Agro-industry & Export", desc: "Production, processing and export of Beninese agricultural products to international markets." },
+        { icon: "\ud83c\udfd7\ufe0f", title: "Construction Materials & Import", desc: "Import of construction materials and equipment for infrastructure projects." },
+        { icon: "\u26a1", title: "Energy & Mobility", desc: "Sustainable energy and mobility solutions serving local development." }
+      ],
+      products: [
+        { name: "Pineapple & Derivatives", desc: "Fresh pineapple, juice and dried fruit, graded and packaged for export." },
+        { name: "Shea & Derivatives", desc: "Raw and refined shea butter, full traceability from the cooperatives." },
+        { name: "Cassava & Derivatives", desc: "Gari, tapioca and cassava flour processed to international standards." },
+        { name: "Palm Nut & Derivatives", desc: "Palm oil and derivatives from a responsible, controlled supply chain." }
+      ]
+    }
+  };
+
+  SLIDES = [
+    "linear-gradient(120deg,#0F2C20 0%,#1B4332 55%,#2C5A45 100%)",
+    "linear-gradient(120deg,#13261C 0%,#1F3D2E 50%,#3A5E49 100%)",
+    "linear-gradient(120deg,#10271D 0%,#244A37 60%,#1B4332 100%)"
+  ];
+
+  componentDidMount() {
+    if (this.props.autoplay !== false) {
+      this.timer = setInterval(() => this.setState(s => ({ slide: (s.slide + 1) % 3 })), 5000);
+    }
+  }
+  componentWillUnmount() { if (this.timer) clearInterval(this.timer); }
+
+  go(i) {
+    this.setState({ slide: i });
+    if (this.timer) { clearInterval(this.timer); this.timer = null; }
+  }
+
+  renderVals() {
+    const lang = this.state.lang || (this.props.defaultLang || "FR");
+    const isFR = lang === "FR";
+    const C = this.T[lang];
+    const dim = this.props.heroDim != null ? this.props.heroDim : 0.6;
+
+    const footerNav = [C.nav.home, C.nav.about, C.nav.export, C.nav.import, C.nav.vision, C.nav.contact];
+
+    const dots = this.SLIDES.map((_, i) => ({
+      color: i === this.state.slide ? "#B8860B" : "rgba(255,255,255,0.45)",
+      width: i === this.state.slide ? "30px" : "11px",
+      onClick: () => this.go(i)
+    }));
+
+    return {
+      t: C,
+      exportMenu: C.exportMenu,
+      importMenu: C.importMenu,
+      pillars: C.pillars,
+      products: C.products,
+      footerNav,
+
+      lang,
+      frBg: isFR ? "#1B4332" : "transparent",
+      frFg: isFR ? "#FFFFFF" : "#1A1A1A",
+      enBg: !isFR ? "#1B4332" : "transparent",
+      enFg: !isFR ? "#FFFFFF" : "#1A1A1A",
+      setFR: () => this.setState({ lang: "FR" }),
+      setEN: () => this.setState({ lang: "EN" }),
+
+      slide: this.state.slide,
+      heroBg: this.SLIDES[this.state.slide],
+      overlayBg: `linear-gradient(180deg, rgba(13,36,25,${dim - 0.1}) 0%, rgba(13,36,25,${dim}) 100%)`,
+      dots,
+
+      exportOpen: this.state.openMenu === "export",
+      importOpen: this.state.openMenu === "import",
+      onExportEnter: () => this.setState({ openMenu: "export" }),
+      onExportLeave: () => this.setState({ openMenu: null }),
+      onImportEnter: () => this.setState({ openMenu: "import" }),
+      onImportLeave: () => this.setState({ openMenu: null })
+    };
+  }
+}
+</script>
+</body>
+</html>

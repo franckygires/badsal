@@ -1,0 +1,156 @@
+﻿---
+import type { Locale } from "../../i18n/types";
+import { getDict, localizePath } from "../../i18n";
+import { site } from "../../data/site";
+import Base from "../../layouts/Base.astro";
+import PageHero from "../PageHero.astro";
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const dict = getDict(locale);
+const a = dict.about;
+const title = `${dict.nav.about} — BADSAL & FILS OKIKIOLA`;
+---
+
+<Base locale={locale} dict={dict} path="/qui-sommes-nous" active="about" title={title} description={a.identityBody[0]}>
+  <PageHero locale={locale} homeLabel={dict.common.breadcrumbHome} breadcrumb={a.breadcrumb} title={a.heroTitle} />
+
+  <!-- Notre identité -->
+  <section class="identity section-pad">
+    <div class="container identity-grid">
+      <div>
+        <span class="eyebrow">{a.identityKicker}</span>
+        <h2 class="sec-title">{a.identityTitle}</h2>
+        <span class="bar"></span>
+        {a.identityBody.map((p) => <p class="body">{p}</p>)}
+        <div class="values">
+          {a.values.map((v) => <span class="value"><span class="dot"></span>{v}</span>)}
+        </div>
+      </div>
+      <div class="identity-photo">
+        <picture>
+          
+          <img src="/images/institutional-team-v2.webp" alt="Équipe BADSAL & FILS OKIKIOLA préparant une opération logistique" loading="lazy" />
+        </picture>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cadre légal -->
+  <section class="legal section-pad">
+    <div class="container legal-inner">
+      <span class="eyebrow">{a.legalKicker}</span>
+      <h2 class="sec-title">{a.legalTitle}</h2>
+      <p class="legal-sub">{a.legalSub}</p>
+      <div class="rccm">
+        <span class="rccm-seal">
+          <svg width="26" height="26" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1.5l1.7 1.1 2-.2.6 1.9 1.6 1.2-.7 1.9.7 1.9-1.6 1.2-.6 1.9-2-.2L8 14.5l-1.7-1.1-2 .2-.6-1.9L2.1 10.5l.7-1.9-.7-1.9 1.6-1.2.6-1.9 2 .2L8 1.5z" fill="currentColor" opacity="0.25"/><path d="M5.6 8.1l1.6 1.6 3.3-3.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="rccm-label">RCCM</span>
+        <span class="rccm-num">{site.rccm}</span>
+        <span class="rccm-rule"></span>
+        <span class="rccm-ifu"><strong>IFU :</strong> {site.ifu}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 engagements -->
+  <section class="engagements section-pad">
+    <div class="container">
+      <div class="sec-head">
+        <span class="eyebrow">{a.engagementsKicker}</span>
+        <h2 class="sec-title">{a.engagementsTitle}</h2>
+        <span class="bar"></span>
+      </div>
+      <div class="eng-grid">
+        {a.engagements.map((e) => (
+          <div class="eng-card">
+            <div class="eng-icon">{e.icon}</div>
+            <h3 class="eng-title">{e.title}</h3>
+            <p class="eng-body">{e.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Bannière industrialisation -->
+  <section class="banner section-pad">
+    <div class="banner-glow"></div>
+    <div class="container banner-inner">
+      <div class="banner-mark">✦</div>
+      <span class="banner-kicker">{a.bannerKicker}</span>
+      <p class="banner-text">“{a.bannerText}”</p>
+      <a class="banner-btn" href={localizePath("/vision", locale)}>{a.bannerBtn}</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .eyebrow { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-accent); }
+  .sec-title { font-family: var(--font-display); font-weight: 700; font-size: 34px; line-height: 1.15; color: var(--color-text); margin: 12px 0 0; }
+  .bar { display: inline-block; width: 56px; height: 3px; background: var(--color-accent); border-radius: 999px; margin: 16px 0 24px; }
+  .body { font-size: 16px; line-height: 1.7; color: var(--color-text-muted); margin: 0 0 18px; }
+
+  /* Identité */
+  .identity { background: var(--color-bg); padding-top: 90px; padding-bottom: 90px; }
+  .identity-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 64px; align-items: center; }
+  .values { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+  .value { display: inline-flex; align-items: center; gap: 7px; background: var(--color-primary-tint); color: var(--color-primary);
+    font-size: 13px; font-weight: 600; padding: 8px 15px; border-radius: 999px; }
+  .value .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-accent); }
+  .identity-photo { aspect-ratio: 4 / 4.6; border-radius: 14px; background: #ffffff;
+    border: 1px solid var(--color-border); box-shadow: 0 18px 48px rgba(20, 48, 38, 0.12);
+    display: flex; align-items: center; justify-content: center; padding: 0; overflow: hidden; }
+  .identity-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* Légal */
+  .legal { background: var(--color-surface); padding-top: 84px; padding-bottom: 84px; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); }
+  .legal-inner { max-width: 760px; margin: 0 auto; text-align: center; }
+  .legal .sec-title { margin-bottom: 8px; }
+  .legal-sub { font-size: 16px; line-height: 1.6; color: var(--color-text-muted); max-width: 560px; margin: 0 auto 34px; }
+  .rccm { display: inline-flex; flex-direction: column; align-items: center; gap: 14px; background: var(--color-primary);
+    border: 1.5px solid var(--color-accent); border-radius: 16px; padding: 34px 56px; box-shadow: 0 14px 40px rgba(20, 48, 38, 0.16); }
+  .rccm-seal { display: inline-flex; align-items: center; justify-content: center; width: 54px; height: 54px; border-radius: 50%;
+    background: rgba(184, 134, 11, 0.18); color: var(--color-accent-soft); }
+  .rccm-label { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-accent-soft); }
+  .rccm-num { font-family: var(--font-display); font-weight: 700; font-size: 30px; color: #fff; letter-spacing: 0.01em; }
+  .rccm-rule { display: block; width: 48px; height: 2px; background: rgba(184, 134, 11, 0.5); border-radius: 999px; }
+  .rccm-ifu { font-size: 15px; color: rgba(255, 255, 255, 0.82); letter-spacing: 0.02em; }
+  .rccm-ifu strong { color: var(--color-accent-soft); font-weight: 600; }
+
+  /* Engagements */
+  .engagements { background: var(--color-bg); padding-top: 90px; padding-bottom: 90px; }
+  .sec-head { text-align: center; margin-bottom: 52px; }
+  .sec-head .bar { margin-bottom: 0; }
+  .eng-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  .eng-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 14px; padding: 36px 30px;
+    box-shadow: 0 2px 6px rgba(26, 26, 26, 0.05); text-align: center; }
+  .eng-icon { width: 64px; height: 64px; margin: 0 auto 20px; border-radius: 14px; background: var(--color-primary-tint);
+    display: flex; align-items: center; justify-content: center; font-size: 30px; }
+  .eng-title { font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 1.25; color: var(--color-text); margin: 0 0 12px; }
+  .eng-body { font-size: 14.5px; line-height: 1.6; color: var(--color-text-muted); margin: 0; }
+
+  /* Bannière */
+  .banner { position: relative; overflow: hidden; background: var(--color-primary); padding-top: 88px; padding-bottom: 88px; }
+  .banner-glow { position: absolute; left: -80px; bottom: -120px; width: 360px; height: 360px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(184, 134, 11, 0.16), transparent 70%); }
+  .banner-inner { max-width: 840px; margin: 0 auto; text-align: center; position: relative; z-index: 2; }
+  .banner-mark { font-size: 38px; color: var(--color-accent); margin-bottom: 18px; }
+  .banner-kicker { display: block; font-size: 13px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-accent-soft); margin-bottom: 20px; }
+  .banner-text { font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 27px; line-height: 1.5; color: #fff; margin: 0; }
+  .banner-btn { display: inline-flex; align-items: center; justify-content: center; margin-top: 34px; background: transparent;
+    color: var(--color-accent-soft); font-size: 15px; font-weight: 600; padding: 13px 30px; border-radius: 6px;
+    text-decoration: none; border: 1.5px solid var(--color-accent); transition: background var(--dur-base) var(--ease-standard); }
+  .banner-btn:hover { background: rgba(184, 134, 11, 0.12); }
+
+  @media (max-width: 900px) {
+    .identity-grid { grid-template-columns: 1fr; gap: 40px; }
+    .eng-grid { grid-template-columns: 1fr; }
+    .rccm { padding: 30px 28px; }
+  }
+  @media (max-width: 560px) {
+    .banner-text { font-size: 22px; }
+    .rccm-num { font-size: 24px; }
+  }
+</style>

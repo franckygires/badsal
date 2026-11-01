@@ -1,0 +1,43 @@
+/* Color tokens — BADSAL & FILS OKIKIOLA
+   Institutional, trustworthy B2B palette. Dark green carries authority,
+   dark gold signals quality and provenance. */
+
+:root {
+  /* ---- Brand ---- */
+  --color-primary: #1B4332;        /* institutional dark green */
+  --color-primary-deep: #143026;   /* pressed / hover-dark */
+  --color-primary-soft: #2C5A45;   /* lifted green for accents on dark */
+  --color-primary-tint: #EAF0EC;   /* faint green wash for surfaces */
+
+  --color-accent: #B8860B;         /* dark gold */
+  --color-accent-deep: #936A08;    /* pressed gold */
+  --color-accent-soft: #D8A93A;    /* brighter gold for small highlights */
+  --color-accent-tint: #F6EFD9;    /* gold wash */
+
+  /* ---- Neutrals ---- */
+  --color-bg: #FAFAF8;             /* off-white page background */
+  --color-surface: #FFFFFF;        /* cards, panels */
+  --color-surface-alt: #F4F4F0;    /* secondary surface */
+  --color-text: #1A1A1A;           /* primary text */
+  --color-text-muted: #5C5F58;     /* secondary text */
+  --color-text-faint: #8A8C84;     /* captions, meta */
+  --color-text-invert: #FAFAF8;    /* text on dark green */
+  --color-border: #E5E5E0;         /* hairline borders */
+  --color-border-strong: #CFCFC8;  /* heavier dividers */
+
+  /* ---- Social / contact channels ---- */
+  --color-whatsapp: #25D366;
+  --color-whatsapp-deep: #1EBE5A;
+  --color-wechat: #07C160;
+  --color-wechat-deep: #06A954;
+
+  /* ---- Semantic aliases ---- */
+  --brand-primary: var(--color-primary);
+  --brand-accent: var(--color-accent);
+  --surface-page: var(--color-bg);
+  --surface-card: var(--color-surface);
+  --text-body: var(--color-text);
+  --text-secondary: var(--color-text-muted);
+  --border-subtle: var(--color-border);
+  --focus-ring: rgba(184, 134, 11, 0.45);
+}

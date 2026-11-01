@@ -1,0 +1,40 @@
+<!-- @dsCard group="Components" viewport="700x240" name="Nav item + dropdown" subtitle="Top-nav links, active underline, dropdown indicator" -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; background: var(--color-bg); font-family: var(--font-body); color: var(--color-text); }
+  .bar { display: flex; align-items: center; gap: 32px; padding: 22px 28px; background: var(--color-surface); border-bottom: var(--border-hairline); }
+  .item { position: relative; display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 500; color: var(--color-text); text-decoration: none; padding: 8px 2px; border-bottom: 2px solid transparent; }
+  .item.active { color: var(--color-primary); font-weight: 600; border-bottom-color: var(--color-accent); }
+  .chev { width: 11px; height: 11px; }
+  .menu { position: absolute; top: calc(100% + 8px); left: 0; min-width: 210px; background: var(--color-surface); border: var(--border-hairline); border-radius: var(--radius-md); box-shadow: var(--shadow-md); padding: 8px; }
+  .menu a { display: block; padding: 9px 12px; font-size: 14px; color: var(--color-text); text-decoration: none; border-radius: var(--radius-sm); }
+  .menu a:hover { background: var(--color-primary-tint); }
+  .hint { padding: 0 28px; font-size: 12px; color: var(--color-text-faint); margin-top: 10px; }
+</style>
+</head>
+<body>
+  <nav class="bar">
+    <a class="item active" href="#">Accueil</a>
+    <div style="position:relative;">
+      <a class="item" href="#">Produits
+        <svg class="chev" viewBox="0 0 12 12"><path d="M2.5 4.5L6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <div class="menu">
+        <a href="#">Agro-alimentaire</a>
+        <a href="#">Textile &amp; coton</a>
+        <a href="#">Produits transformés</a>
+      </div>
+    </div>
+    <a class="item" href="#">Services
+      <svg class="chev" viewBox="0 0 12 12"><path d="M2.5 4.5L6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <a class="item" href="#">À propos</a>
+    <a class="item" href="#">Contact</a>
+  </nav>
+  <p class="hint">Dropdown shown open for the “Produits” item · active state on “Accueil”.</p>
+</body>
+</html>

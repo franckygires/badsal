@@ -1,0 +1,43 @@
+<!-- @dsCard group="Components" viewport="700x440" name="Product card" subtitle="Image, category, serif title, 2-line excerpt, CTA" -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; background: var(--color-bg); font-family: var(--font-body); color: var(--color-text); }
+  .grid { padding: 28px; display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--gutter); max-width: 640px; }
+  .card { display: flex; flex-direction: column; background: var(--color-surface); border: var(--border-hairline); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); }
+  .photo { aspect-ratio: 4 / 3; display: flex; align-items: center; justify-content: center; color: var(--color-text-faint); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .p-anacarde { background: linear-gradient(135deg, #d8c9a0, #b89b5e); }
+  .p-coton { background: linear-gradient(135deg, #eef0ee, #cfd5cd); }
+  .body { display: flex; flex-direction: column; gap: 10px; padding: 18px 18px 20px; }
+  .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent); }
+  .title { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 1.2; }
+  .excerpt { margin: 0; font-size: 14px; line-height: 1.5; color: var(--color-text-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .cta { align-self: flex-start; margin-top: 4px; display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 13px; padding: 8px 16px; color: var(--color-primary); background: transparent; border: 1.5px solid var(--color-primary); border-radius: var(--radius-sm); cursor: pointer; }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <article class="card">
+      <div class="photo p-anacarde">Photo produit</div>
+      <div class="body">
+        <span class="eyebrow">Agro-alimentaire</span>
+        <h3 class="title">Anacarde brute</h3>
+        <p class="excerpt">Noix de cajou de qualité supérieure, calibrées et triées, conditionnées pour l'export international.</p>
+        <button class="cta">En savoir plus &rarr;</button>
+      </div>
+    </article>
+    <article class="card">
+      <div class="photo p-coton">Photo produit</div>
+      <div class="body">
+        <span class="eyebrow">Textile</span>
+        <h3 class="title">Coton fibre</h3>
+        <p class="excerpt">Coton brut conditionné en balles, conforme aux standards internationaux de qualité et de traçabilité.</p>
+        <button class="cta">En savoir plus &rarr;</button>
+      </div>
+    </article>
+  </div>
+</body>
+</html>

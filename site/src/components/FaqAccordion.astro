@@ -1,0 +1,64 @@
+---
+import type { Faq } from "../i18n/types";
+
+interface Props {
+  faqs: Faq[];
+}
+const { faqs } = Astro.props;
+---
+
+<div class="faq">
+  {faqs.map((f, i) => (
+    <div class:list={["faq-item", { open: i === 0 }]}>
+      <button class="faq-q" type="button" aria-expanded={i === 0 ? "true" : "false"}>
+        <span>{f.q}</span>
+        <span class="faq-sign" aria-hidden="true"></span>
+      </button>
+      <div class="faq-a" hidden={i !== 0}>
+        <span class="faq-rule"></span>
+        <p>{f.a}</p>
+      </div>
+    </div>
+  ))}
+</div>
+
+<style>
+  .faq { display: flex; flex-direction: column; gap: 14px; }
+  .faq-item { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(26, 26, 26, 0.04); }
+  .faq-q {
+    width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    text-align: left; background: transparent; border: none; cursor: pointer; padding: 20px 22px;
+    font-family: var(--font-body); font-size: 16px; font-weight: 600; color: var(--color-text); line-height: 1.35;
+  }
+  .faq-sign { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: var(--color-primary-tint);
+    color: var(--color-primary); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 600; }
+  .faq-sign::before { content: "+"; }
+  .faq-item.open .faq-sign { background: var(--color-accent); color: #fff; }
+  .faq-item.open .faq-sign::before { content: "−"; }
+  .faq-a { padding: 0 22px 22px; }
+  .faq-rule { display: block; width: 100%; height: 1px; background: #efefea; margin-bottom: 16px; }
+  .faq-a p { font-size: 15px; line-height: 1.65; color: var(--color-text-muted); margin: 0; }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>(".faq").forEach((faq) => {
+    const items = faq.querySelectorAll<HTMLElement>(".faq-item");
+    items.forEach((item) => {
+      const btn = item.querySelector<HTMLButtonElement>(".faq-q");
+      const panel = item.querySelector<HTMLElement>(".faq-a");
+      btn?.addEventListener("click", () => {
+        const willOpen = !item.classList.contains("open");
+        items.forEach((other) => {
+          other.classList.remove("open");
+          other.querySelector(".faq-q")?.setAttribute("aria-expanded", "false");
+          other.querySelector<HTMLElement>(".faq-a")?.toggleAttribute("hidden", true);
+        });
+        if (willOpen) {
+          item.classList.add("open");
+          btn.setAttribute("aria-expanded", "true");
+          if (panel) panel.hidden = false;
+        }
+      });
+    });
+  });
+</script>

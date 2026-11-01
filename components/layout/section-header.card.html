@@ -1,0 +1,34 @@
+<!-- @dsCard group="Components" viewport="700x300" name="Section header" subtitle="Eyebrow + serif title + gold underline accent" -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; background: var(--color-bg); font-family: var(--font-body); color: var(--color-text); }
+  .wrap { padding: 30px 28px; display: flex; flex-direction: column; gap: 26px; }
+  .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-accent); }
+  .title { margin: 10px 0 0; font-family: var(--font-display); font-weight: 700; font-size: 30px; line-height: 1.15; letter-spacing: -0.01em; }
+  .bar { display: block; width: 56px; height: 3px; background: var(--color-accent); border-radius: var(--radius-pill); margin-top: 14px; }
+  .desc { margin: 14px 0 0; font-size: 16px; line-height: 1.6; color: var(--color-text-muted); max-width: 560px; }
+  .dark { background: var(--color-primary); border-radius: var(--radius-md); padding: 26px; }
+  .dark .title { color: var(--color-text-invert); }
+  .dark .desc { color: rgba(250,250,248,0.78); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="eyebrow">Notre catalogue</span>
+      <h2 class="title">Des produits d'exception, prêts à l'export</h2>
+      <span class="bar"></span>
+      <p class="desc">Sourcés au Bénin et dans la sous-région, contrôlés et conditionnés selon les normes internationales.</p>
+    </header>
+    <header class="dark">
+      <span class="eyebrow">À propos</span>
+      <h2 class="title">Un partenaire de confiance à Cotonou</h2>
+      <span class="bar"></span>
+    </header>
+  </div>
+</body>
+</html>

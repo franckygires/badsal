@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #FAFAF8; }
+  input::placeholder, textarea::placeholder { color: #9A9C94; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: #B8860B !important; box-shadow: 0 0 0 3px rgba(184,134,11,0.15); }
+</style>
+</helmet>
+
+<div style="width:1440px; margin:0 auto; background:#FAFAF8; color:#1A1A1A; font-family:'Inter',sans-serif; overflow:hidden;">
+
+  <!-- ===================== HEADER ===================== -->
+  <header style="position:sticky; top:0; z-index:50; background:#FFFFFF; border-bottom:1px solid #E5E5E0; box-shadow:0 1px 0 rgba(0,0,0,0.02);">
+    <div style="display:flex; align-items:center; justify-content:space-between; height:84px; padding:0 48px;">
+      <a href="Homepage.dc.html" style="display:flex; align-items:center; gap:14px; text-decoration:none;">
+        <span style="width:46px; height:46px; background:#1B4332; border-radius:6px; display:flex; align-items:center; justify-content:center; color:#B8860B; font-family:'Playfair Display',serif; font-weight:700; font-size:22px;">B</span>
+        <span style="display:flex; flex-direction:column; line-height:1.05;">
+          <span style="font-family:'Playfair Display',serif; font-weight:700; font-size:18px; letter-spacing:0.02em; color:#B8860B;">BADSAL &amp; FILS OKIKIOLA</span>
+          <span style="font-size:10px; letter-spacing:0.26em; text-transform:uppercase; color:#8A8C84; margin-top:3px;">Import &middot; Export &middot; Cotonou</span>
+        </span>
+      </a>
+      <nav style="display:flex; align-items:center; gap:26px;">
+        <a href="Homepage.dc.html" style="font-size:15px; font-weight:500; color:#1A1A1A; text-decoration:none;">{{ t.nav.home }}</a>
+        <a href="QuiSommesNous.dc.html" style="font-size:15px; font-weight:500; color:#1A1A1A; text-decoration:none;">{{ t.nav.about }}</a>
+
+        <div style="position:relative;" onMouseEnter="{{ onExportEnter }}" onMouseLeave="{{ onExportLeave }}">
+          <span style="font-size:15px; font-weight:500; color:#1A1A1A; cursor:pointer; display:inline-flex; align-items:center; gap:5px;">{{ t.nav.export }} <span style="font-size:10px; color:#B8860B;">&#9660;</span></span>
+          <sc-if value="{{ exportOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute; top:calc(100% + 12px); left:50%; transform:translateX(-50%); min-width:230px; background:#FFFFFF; border:1px solid #E5E5E0; border-radius:10px; box-shadow:0 14px 38px rgba(20,48,38,0.14); padding:8px; z-index:60;">
+              <sc-for list="{{ exportMenu }}" as="item" hint-placeholder-count="4">
+                <a href="Exportation.dc.html" style="display:block; padding:10px 14px; font-size:14px; color:#1A1A1A; text-decoration:none; border-radius:6px;" style-hover="background:#EAF0EC;">{{ item }}</a>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="position:relative;" onMouseEnter="{{ onImportEnter }}" onMouseLeave="{{ onImportLeave }}">
+          <span style="font-size:15px; font-weight:500; color:#1A1A1A; cursor:pointer; display:inline-flex; align-items:center; gap:5px;">{{ t.nav.import }} <span style="font-size:10px; color:#B8860B;">&#9660;</span></span>
+          <sc-if value="{{ importOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute; top:calc(100% + 12px); left:50%; transform:translateX(-50%); min-width:250px; background:#FFFFFF; border:1px solid #E5E5E0; border-radius:10px; box-shadow:0 14px 38px rgba(20,48,38,0.14); padding:8px; z-index:60;">
+              <sc-for list="{{ importMenu }}" as="item" hint-placeholder-count="3">
+                <a href="Importation.dc.html" style="display:block; padding:10px 14px; font-size:14px; color:#1A1A1A; text-decoration:none; border-radius:6px;" style-hover="background:#EAF0EC;">{{ item }}</a>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+
+        <a href="Vision.dc.html" style="font-size:15px; font-weight:500; color:#1A1A1A; text-decoration:none;">{{ t.nav.vision }}</a>
+        <a href="#" style="font-size:15px; font-weight:600; color:#1B4332; text-decoration:none; padding:8px 0; border-bottom:2px solid #B8860B;">{{ t.nav.contact }}</a>
+      </nav>
+      <div style="display:flex; align-items:center; gap:18px;">
+        <div style="display:flex; align-items:center; border:1px solid #E5E5E0; border-radius:999px; overflow:hidden;">
+          <button onClick="{{ setFR }}" style="border:none; cursor:pointer; font-family:'Inter',sans-serif; font-size:13px; font-weight:600; padding:7px 13px; background:{{ frBg }}; color:{{ frFg }};">FR</button>
+          <button onClick="{{ setEN }}" style="border:none; cursor:pointer; font-family:'Inter',sans-serif; font-size:13px; font-weight:600; padding:7px 13px; background:{{ enBg }}; color:{{ enFg }};">EN</button>
+        </div>
+        <a href="#" style="display:inline-flex; align-items:center; justify-content:center; background:#B8860B; color:#FFFFFF; font-size:14px; font-weight:600; padding:12px 22px; border-radius:6px; text-decoration:none; box-shadow:0 2px 8px rgba(184,134,11,0.28);" style-hover="background:#936A08;">{{ t.cta }}</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== PAGE HERO ===================== -->
+  <section style="position:relative; background:linear-gradient(120deg,#0F2C20 0%,#1B4332 60%,#2C5A45 100%); padding:56px 48px 60px; overflow:hidden;">
+    <div style="position:absolute; right:40px; top:-90px; width:340px; height:340px; border-radius:50%; background:radial-gradient(circle, rgba(184,134,11,0.20), transparent 70%); pointer-events:none;"></div>
+    <div style="max-width:1200px; margin:0 auto; position:relative; z-index:2;">
+      <div style="display:flex; align-items:center; gap:9px; font-size:13px; color:rgba(255,255,255,0.7); margin-bottom:18px;">
+        <a href="Homepage.dc.html" style="color:rgba(255,255,255,0.7); text-decoration:none;" style-hover="color:#D8A93A;">{{ t.nav.home }}</a>
+        <span style="color:#B8860B;">&rsaquo;</span>
+        <span style="color:#D8A93A;">{{ t.nav.contact }}</span>
+      </div>
+      <h1 style="font-family:'Playfair Display',serif; font-weight:700; font-size:48px; line-height:1.08; color:#FFFFFF; margin:0;">{{ t.heroTitle }}</h1>
+      <span style="display:block; width:64px; height:3px; background:#B8860B; border-radius:999px; margin-top:20px;"></span>
+      <p style="font-size:17px; line-height:1.6; color:rgba(255,255,255,0.82); max-width:640px; margin:20px 0 0;">{{ t.heroSub }}</p>
+    </div>
+  </section>
+
+  <!-- ===================== FAQ + CONTACT CARD ===================== -->
+  <section style="background:#FAFAF8; padding:88px 48px 40px;">
+    <div style="max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1.1fr 0.9fr; gap:48px; align-items:start;">
+
+      <!-- FAQ -->
+      <div>
+        <span style="display:block; font-size:12px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#B8860B;">{{ t.faqKicker }}</span>
+        <h2 style="font-family:'Playfair Display',serif; font-weight:700; font-size:30px; color:#1A1A1A; margin:12px 0 0;">{{ t.faqTitle }}</h2>
+        <span style="display:block; width:56px; height:3px; background:#B8860B; border-radius:999px; margin:16px 0 28px;"></span>
+        <div style="display:flex; flex-direction:column; gap:14px;">
+          <sc-for list="{{ faqs }}" as="faq" hint-placeholder-count="3">
+            <div style="background:#FFFFFF; border:1px solid #E5E5E0; border-radius:12px; overflow:hidden; box-shadow:0 1px 3px rgba(26,26,26,0.04);">
+              <button onClick="{{ faq.onClick }}" style="width:100%; display:flex; align-items:center; justify-content:space-between; gap:16px; text-align:left; background:transparent; border:none; cursor:pointer; padding:20px 22px; font-family:'Inter',sans-serif;">
+                <span style="font-size:16px; font-weight:600; color:#1A1A1A; line-height:1.35;">{{ faq.q }}</span>
+                <span style="flex-shrink:0; width:28px; height:28px; border-radius:50%; background:{{ faq.iconBg }}; color:{{ faq.iconFg }}; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:600; line-height:1;">{{ faq.sign }}</span>
+              </button>
+              <sc-if value="{{ faq.open }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:0 22px 22px;">
+                  <span style="display:block; width:100%; height:1px; background:#EFEFEA; margin-bottom:16px;"></span>
+                  <p style="font-size:15px; line-height:1.65; color:#5C5F58; margin:0;">{{ faq.a }}</p>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- Contact card -->
+      <div style="background:#1B4332; border:1.5px solid rgba(184,134,11,0.35); border-radius:16px; padding:38px 34px; box-shadow:0 18px 48px rgba(20,48,38,0.18); position:relative; overflow:hidden;">
+        <div style="position:absolute; right:-50px; top:-50px; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle, rgba(184,134,11,0.18), transparent 70%);"></div>
+        <div style="position:relative; z-index:2;">
+          <h3 style="font-family:'Playfair Display',serif; font-weight:700; font-size:24px; color:#FFFFFF; margin:0 0 6px;">{{ t.contactTitle }}</h3>
+          <p style="font-size:14px; color:rgba(255,255,255,0.7); margin:0 0 26px; line-height:1.5;">{{ t.contactSub }}</p>
+
+          <div style="display:flex; gap:13px; margin-bottom:24px;">
+            <span style="flex-shrink:0; width:38px; height:38px; border-radius:10px; background:rgba(184,134,11,0.18); color:#D8A93A; display:flex; align-items:center; justify-content:center;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+            </span>
+            <div>
+              <span style="display:block; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#D8A93A; margin-bottom:4px;">{{ t.addressLabel }}</span>
+              <span style="font-size:14.5px; color:rgba(255,255,255,0.9); line-height:1.5;">Cotonou, Akpakpa PK 5,<br/>Dandji Lot N&deg;772</span>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:11px; margin-bottom:20px;">
+            <a href="#" style="display:flex; align-items:center; gap:11px; background:#25D366; color:#FFFFFF; font-size:15px; font-weight:600; padding:12px 18px; border-radius:8px; text-decoration:none;" style-hover="background:#1EBE5A;">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.27.86 5.83 2.42a8.2 8.2 0 0 1 2.42 5.82c0 4.54-3.7 8.24-8.25 8.24a8.2 8.2 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.18 8.18 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24zm-3.4 4.43c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.69 2.58 4.1 3.62.57.25 1.02.39 1.37.5.57.18 1.1.16 1.51.1.46-.07 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06z"/></svg>
+              <span style="display:flex; flex-direction:column; line-height:1.2;"><span>WhatsApp &middot; +229 0199034344</span><span style="font-size:11.5px; font-weight:400; opacity:0.82;">0197886596 &middot; 0148474788</span></span>
+            </a>
+            <a href="#" style="display:flex; align-items:center; gap:11px; background:#07C160; color:#FFFFFF; font-size:15px; font-weight:600; padding:12px 18px; border-radius:8px; text-decoration:none;" style-hover="background:#06A954;">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M8.69 4C4.62 4 1.3 6.74 1.3 10.14c0 1.93 1.07 3.65 2.74 4.8l-.55 1.7 2.02-1.04c.72.22 1.45.36 2.18.4-.13-.45-.2-.92-.2-1.4 0-2.98 2.84-5.36 6.32-5.36.23 0 .45.01.67.03C13.9 6.32 11.55 4 8.69 4zm-2.4 3.2a.92.92 0 1 1 0 1.84.92.92 0 0 1 0-1.84zm4.84 0a.92.92 0 1 1 0 1.84.92.92 0 0 1 0-1.84zM14.1 9.6c-3 0-5.45 2.04-5.45 4.56s2.45 4.56 5.45 4.56c.62 0 1.23-.1 1.81-.28l1.67.86-.46-1.42c1.36-.96 2.23-2.42 2.23-4.06 0-2.52-2.45-4.56-5.25-4.56z"/></svg>
+              WeChat &middot; +86 17502105979
+            </a>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:11px; padding-top:18px; border-top:1px solid rgba(255,255,255,0.12);">
+            <span style="flex-shrink:0; width:38px; height:38px; border-radius:10px; background:rgba(184,134,11,0.18); color:#D8A93A; display:flex; align-items:center; justify-content:center;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm8 7L4.5 6.5h15L12 11z"/></svg>
+            </span>
+            <div>
+              <span style="display:block; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#D8A93A; margin-bottom:3px;">Email</span>
+              <a href="mailto:info@badsal-okikiola-fils.be" style="font-size:14.5px; color:#FFFFFF; text-decoration:none;" style-hover="color:#D8A93A;">info@badsal-okikiola-fils.be</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================== QUOTE FORM ===================== -->
+  <section style="background:#FAFAF8; padding:40px 48px 96px;">
+    <div style="max-width:1200px; margin:0 auto; background:#FFFFFF; border:1px solid #E5E5E0; border-radius:18px; box-shadow:0 8px 28px rgba(26,26,26,0.06); padding:52px 56px;">
+      <div style="text-align:center; margin-bottom:40px;">
+        <span style="display:block; font-size:12px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#B8860B;">{{ t.formKicker }}</span>
+        <h2 style="font-family:'Playfair Display',serif; font-weight:700; font-size:32px; color:#1A1A1A; margin:12px 0 0;">{{ t.formTitle }}</h2>
+        <span style="display:inline-block; width:64px; height:3px; background:#B8860B; border-radius:999px; margin-top:16px;"></span>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:22px 28px;">
+        <label style="display:flex; flex-direction:column; gap:8px;">
+          <span style="font-size:13px; font-weight:600; color:#1A1A1A;">{{ t.fName }}</span>
+          <input type="text" placeholder="{{ t.phName }}" style="font-family:'Inter',sans-serif; font-size:15px; color:#1A1A1A; padding:13px 15px; border:1px solid #E5E5E0; border-radius:8px; background:#FAFAF8;" />
+        </label>
+        <label style="display:flex; flex-direction:column; gap:8px;">
+          <span style="font-size:13px; font-weight:600; color:#1A1A1A;">{{ t.fCompany }}</span>
+          <input type="text" placeholder="{{ t.phCompany }}" style="font-family:'Inter',sans-serif; font-size:15px; color:#1A1A1A; padding:13px 15px; border:1px solid #E5E5E0; border-radius:8px; background:#FAFAF8;" />
+        </label>
+        <label style="display:flex; flex-direction:column; gap:8px;">
+          <span style="font-size:13px; font-weight:600; color:#1A1A1A;">{{ t.fEmail }}</span>
+          <input type="email" placeholder="{{ t.phEmail }}" style="font-family:'Inter',sans-serif; font-size:15px; color:#1A1A1A; padding:13px 15px; border:1px solid #E5E5E0; border-radius:8px; background:#FAFAF8;" />
+        </label>
+        <label style="display:flex; flex-direction:column; gap:8px;">
+          <span style="font-size:13px; font-weight:600; color:#1A1A1A;">{{ t.fProduct }}</span>
+          <select style="font-family:'Inter',sans-serif; font-size:15px; color:#1A1A1A; padding:13px 15px; border:1px solid #E5E5E0; border-radius:8px; background:#FAFAF8; cursor:pointer;">
+            <option value="" disabled selected>{{ t.phProduct }}</option>
+            <sc-for list="{{ productOptions }}" as="opt" hint-placeholder-count="6">
+              <option>{{ opt }}</option>
+            </sc-for>
+          </select>
+        </label>
+        <label style="display:flex; flex-direction:column; gap:8px;">
+          <span style="font-size:13px; font-weight:600; color:#1A1A1A;">{{ t.fQty }}</span>
+          <input type="text" placeholder="{{ t.phQty }}" style="font-family:'Inter',sans-serif; font-size:15px; color:#1A1A1A; padding:13px 15px; border:1px solid #E5E5E0; border-radius:8px; background:#FAFAF8;" />
+        </label>
+        <label style="display:flex; flex-direction:column; gap:8px;">
+          <span style="font-size:13px; font-weight:600; color:#1A1A1A;">{{ t.fIncoterm }}</span>
+          <select style="font-family:'Inter',sans-serif; font-size:15px; color:#1A1A1A; padding:13px 15px; border:1px solid #E5E5E0; border-radius:8px; background:#FAFAF8; cursor:pointer;">
+            <option value="" disabled selected>{{ t.phIncoterm }}</option>
+            <sc-for list="{{ incoterms }}" as="opt" hint-placeholder-count="2">
+              <option>{{ opt }}</option>
+            </sc-for>
+          </select>
+        </label>
+        <label style="display:flex; flex-direction:column; gap:8px; grid-column:1 / -1;">
+          <span style="font-size:13px; font-weight:600; color:#1A1A1A;">{{ t.fMessage }}</span>
+          <textarea rows="4" placeholder="{{ t.phMessage }}" style="font-family:'Inter',sans-serif; font-size:15px; color:#1A1A1A; padding:13px 15px; border:1px solid #E5E5E0; border-radius:8px; background:#FAFAF8; resize:vertical;"></textarea>
+        </label>
+      </div>
+
+      <div style="display:flex; justify-content:center; margin-top:36px;">
+        <button style="display:inline-flex; align-items:center; justify-content:center; gap:9px; background:#B8860B; color:#FFFFFF; font-family:'Inter',sans-serif; font-size:16px; font-weight:600; padding:16px 36px; border:1.5px solid #B8860B; border-radius:8px; cursor:pointer; box-shadow:0 4px 16px rgba(184,134,11,0.32);" style-hover="background:#936A08;">{{ t.formBtn }} &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer style="background:#0F2A1F; color:rgba(255,255,255,0.72); padding:64px 48px 0;">
+    <div style="max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1.4fr 1fr 1.2fr; gap:48px; padding-bottom:48px;">
+      <div>
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px;">
+          <span style="width:42px; height:42px; background:#1B4332; border:1px solid rgba(184,134,11,0.4); border-radius:6px; display:flex; align-items:center; justify-content:center; color:#B8860B; font-family:'Playfair Display',serif; font-weight:700; font-size:20px;">B</span>
+          <span style="font-family:'Playfair Display',serif; font-weight:700; font-size:17px; color:#B8860B; line-height:1.2;">BADSAL &amp; FILS<br/>OKIKIOLA</span>
+        </div>
+        <p style="font-size:14px; line-height:1.65; color:rgba(255,255,255,0.6); margin:0; max-width:320px;">{{ t.footerTagline }}</p>
+      </div>
+      <div>
+        <h4 style="font-size:12px; letter-spacing:0.16em; text-transform:uppercase; color:#D8A93A; margin:0 0 18px;">{{ t.footerNavTitle }}</h4>
+        <div style="display:flex; flex-direction:column; gap:11px;">
+          <sc-for list="{{ footerNav }}" as="link" hint-placeholder-count="6">
+            <a href="#" style="font-size:14px; color:rgba(255,255,255,0.72); text-decoration:none;" style-hover="color:#D8A93A;">{{ link }}</a>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <h4 style="font-size:12px; letter-spacing:0.16em; text-transform:uppercase; color:#D8A93A; margin:0 0 18px;">{{ t.footerContactTitle }}</h4>
+        <p style="font-size:14px; color:rgba(255,255,255,0.7); margin:0 0 16px; line-height:1.6;">Cotonou, Akpakpa PK 5,<br/>Dandji Lot N&deg;772</p>
+        <a href="mailto:info@badsal-okikiola-fils.be" style="font-size:14px; color:#D8A93A; text-decoration:none;">info@badsal-okikiola-fils.be</a>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,0.1); padding:22px 0 30px; display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap;">
+      <span style="display:inline-flex; align-items:center; gap:8px; background:rgba(184,134,11,0.14); border:1px solid rgba(184,134,11,0.4); color:#D8A93A; font-size:12.5px; font-weight:500; padding:7px 14px; border-radius:999px; letter-spacing:0.02em;">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.7 1.1 2-.2.6 1.9 1.6 1.2-.7 1.9.7 1.9-1.6 1.2-.6 1.9-2-.2L8 14.5l-1.7-1.1-2 .2-.6-1.9L2.1 10.5l.7-1.9-.7-1.9 1.6-1.2.6-1.9 2 .2L8 1.5z" fill="currentColor" opacity="0.25"/><path d="M5.6 8.1l1.6 1.6 3.3-3.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        RCCM : N&deg;RB/PNO/18 B 2200 &nbsp;|&nbsp; IFU : 320080103218
+      </span>
+      <span style="font-size:13px; color:rgba(255,255,255,0.45);">&copy; 2026 BADSAL &amp; FILS OKIKIOLA &mdash; Cotonou, B&eacute;nin</span>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900},&quot;defaultLang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;FR&quot;,&quot;EN&quot;],&quot;default&quot;:&quot;FR&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;}}">
+class Component extends DCLogic {
+  state = { lang: null, openMenu: null, openFaq: 0 };
+
+  T = {
+    FR: {
+      nav: { home: "Accueil", about: "Qui sommes-nous", export: "Exportation", import: "Importation", vision: "Vision & Industrialisation", contact: "Contact" },
+      cta: "Demander un devis",
+      heroTitle: "Contact & FAQ",
+      heroSub: "Une question, un projet d'import-export ? Notre \u00e9quipe vous r\u00e9pond sous 24 h ouvr\u00e9es.",
+      faqKicker: "Questions fr\u00e9quentes",
+      faqTitle: "Tout ce qu'il faut savoir",
+      contactTitle: "Parlons de votre projet",
+      contactSub: "Joignez-nous directement par messagerie ou e-mail.",
+      addressLabel: "Adresse",
+      formKicker: "Demande de devis",
+      formTitle: "Recevez une offre personnalis\u00e9e",
+      fName: "Nom complet", phName: "Votre nom",
+      fCompany: "Soci\u00e9t\u00e9", phCompany: "Nom de votre soci\u00e9t\u00e9",
+      fEmail: "Email", phEmail: "vous@entreprise.com",
+      fProduct: "Produit souhait\u00e9", phProduct: "S\u00e9lectionnez un produit",
+      fQty: "Quantit\u00e9 estim\u00e9e", phQty: "Ex. 2 conteneurs FCL / mois",
+      fIncoterm: "Incoterm souhait\u00e9", phIncoterm: "Choisir un Incoterm",
+      fMessage: "Message", phMessage: "D\u00e9crivez votre besoin, vos d\u00e9lais et le port de destination\u2026",
+      formBtn: "Envoyer ma demande de devis",
+      footerTagline: "Votre partenaire de confiance dans le commerce international et l'agro-industrie au B\u00e9nin.",
+      footerNavTitle: "Navigation",
+      footerContactTitle: "Contact",
+      faqs: [
+        { q: "O\u00f9 \u00eates-vous bas\u00e9s ?", a: "Cotonou, Akpakpa PK 5, Dandji Lot N\u00b0772 \u2014 RCCM N\u00b0RB/PNO/18 B 2200." },
+        { q: "Quels sont vos Incoterms habituels ?", a: "Principalement CIF (port de destination), parfois FOB selon les besoins." },
+        { q: "Quelles sont vos capacit\u00e9s d'approvisionnement ?", a: "Des lots d'\u00e9chantillonnage (a\u00e9rien) jusqu'aux contrats FCL multi-conteneurs mensuels." }
+      ],
+      productOptions: ["Anacarde (Cajou)", "Soja & D\u00e9riv\u00e9s", "Mangue & Avocat frais", "S\u00e9same", "Arachide", "Miel Pur Bio", "Fruits S\u00e9ch\u00e9s", "Aliments de B\u00e9tail", "Ressources Mini\u00e8res (Or)", "Mat\u00e9riaux de Structure", "\u00c9quipements & Second \u0152uvre", "Finitions & Ustensiles", "Autre"],
+      incoterms: ["CIF (port de destination)", "FOB", "EXW", "Autre"],
+      exportMenu: ["Anacarde (Cajou)", "Soja & D\u00e9riv\u00e9s", "S\u00e9same", "Ressources Mini\u00e8res (Or)"],
+      importMenu: ["Mat\u00e9riaux de Structure", "\u00c9quipements & Second \u0152uvre", "Finitions & Ustensiles de Toilette"]
+    },
+    EN: {
+      nav: { home: "Home", about: "About us", export: "Export", import: "Import", vision: "Vision & Industrialization", contact: "Contact" },
+      cta: "Request a quote",
+      heroTitle: "Contact & FAQ",
+      heroSub: "A question or an import-export project? Our team replies within 24 business hours.",
+      faqKicker: "Frequently asked questions",
+      faqTitle: "Everything you need to know",
+      contactTitle: "Let's talk about your project",
+      contactSub: "Reach us directly by messaging or email.",
+      addressLabel: "Address",
+      formKicker: "Quote request",
+      formTitle: "Receive a tailored offer",
+      fName: "Full name", phName: "Your name",
+      fCompany: "Company", phCompany: "Your company name",
+      fEmail: "Email", phEmail: "you@company.com",
+      fProduct: "Desired product", phProduct: "Select a product",
+      fQty: "Estimated quantity", phQty: "e.g. 2 FCL containers / month",
+      fIncoterm: "Preferred Incoterm", phIncoterm: "Choose an Incoterm",
+      fMessage: "Message", phMessage: "Describe your need, your timeline and the destination port\u2026",
+      formBtn: "Send my quote request",
+      footerTagline: "Your trusted partner in international trade and agro-industry in Benin.",
+      footerNavTitle: "Navigation",
+      footerContactTitle: "Contact",
+      faqs: [
+        { q: "Where are you based?", a: "Cotonou, Akpakpa PK 5, Dandji Lot N\u00b0772 \u2014 RCCM N\u00b0RB/PNO/18 B 2200." },
+        { q: "What are your usual Incoterms?", a: "Mainly CIF (destination port), sometimes FOB depending on needs." },
+        { q: "What are your supply capacities?", a: "From sampling lots (air freight) up to monthly multi-container FCL contracts." }
+      ],
+      productOptions: ["Cashew", "Soy & Derivatives", "Fresh Mango & Avocado", "Sesame", "Groundnut", "Pure Organic Honey", "Dried Fruits", "Animal Feed", "Mining Resources (Gold)", "Structural Materials", "Equipment & Second Fix", "Finishes & Fittings", "Other"],
+      incoterms: ["CIF (destination port)", "FOB", "EXW", "Other"],
+      exportMenu: ["Cashew", "Soy & Derivatives", "Sesame", "Mining Resources (Gold)"],
+      importMenu: ["Structural Materials", "Equipment & Second Fix", "Finishes & Bathroom Fittings"]
+    }
+  };
+
+  renderVals() {
+    const lang = this.state.lang || (this.props.defaultLang || "FR");
+    const isFR = lang === "FR";
+    const C = this.T[lang];
+    const footerNav = [C.nav.home, C.nav.about, C.nav.export, C.nav.import, C.nav.vision, C.nav.contact];
+
+    const faqs = C.faqs.map((f, i) => {
+      const open = this.state.openFaq === i;
+      return {
+        q: f.q, a: f.a, open,
+        sign: open ? "\u2212" : "+",
+        iconBg: open ? "#B8860B" : "#EAF0EC",
+        iconFg: open ? "#FFFFFF" : "#1B4332",
+        onClick: () => this.setState(s => ({ openFaq: s.openFaq === i ? -1 : i }))
+      };
+    });
+
+    return {
+      t: C,
+      faqs,
+      productOptions: C.productOptions,
+      incoterms: C.incoterms,
+      exportMenu: C.exportMenu,
+      importMenu: C.importMenu,
+      footerNav,
+
+      lang,
+      frBg: isFR ? "#1B4332" : "transparent",
+      frFg: isFR ? "#FFFFFF" : "#1A1A1A",
+      enBg: !isFR ? "#1B4332" : "transparent",
+      enFg: !isFR ? "#FFFFFF" : "#1A1A1A",
+      setFR: () => this.setState({ lang: "FR" }),
+      setEN: () => this.setState({ lang: "EN" }),
+
+      exportOpen: this.state.openMenu === "export",
+      importOpen: this.state.openMenu === "import",
+      onExportEnter: () => this.setState({ openMenu: "export" }),
+      onExportLeave: () => this.setState({ openMenu: null }),
+      onImportEnter: () => this.setState({ openMenu: "import" }),
+      onImportLeave: () => this.setState({ openMenu: null })
+    };
+  }
+}
+</script>
+</body>
+</html>

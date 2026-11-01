@@ -1,0 +1,50 @@
+---
+import type { Locale } from "../../i18n/types";
+import { getDict } from "../../i18n";
+import { site } from "../../data/site";
+import Base from "../../layouts/Base.astro";
+import PageHero from "../PageHero.astro";
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const dict = getDict(locale);
+const copy = {
+  fr: {
+    title: "Mentions légales & confidentialité",
+    intro: "Informations légales et principes de traitement des demandes envoyées depuis ce site.",
+    legal: "Informations légales", privacy: "Confidentialité", company: "Entreprise", address: "Adresse",
+    text: "Les informations transmises via le formulaire de devis sont utilisées exclusivement pour répondre à votre demande commerciale et assurer son suivi. Elles ne sont pas cédées à des tiers à des fins commerciales. Vous pouvez demander l’accès, la rectification ou la suppression de vos données en écrivant à",
+    notice: "Les contenus, visuels et signes distinctifs publiés sur ce site sont protégés. Toute reproduction ou utilisation sans accord préalable de BADSAL & FILS OKIKIOLA est interdite."
+  },
+  en: {
+    title: "Legal notice & privacy",
+    intro: "Legal information and the principles governing requests sent from this website.",
+    legal: "Legal information", privacy: "Privacy", company: "Company", address: "Address",
+    text: "Information submitted through the quotation form is used solely to respond to and follow up on your commercial request. It is not sold to third parties. You may request access, correction or deletion of your data by writing to",
+    notice: "The content, visuals and distinctive signs published on this website are protected. Any reproduction or use without prior consent from BADSAL & FILS OKIKIOLA is prohibited."
+  },
+  zh: {
+    title: "法律声明与隐私保护",
+    intro: "本网站提交请求的法律信息及个人信息处理原则。",
+    legal: "法律信息", privacy: "隐私保护", company: "公司", address: "地址",
+    text: "通过报价表单提交的信息仅用于回复和跟进您的商业请求，不会为商业目的出售或转让给第三方。您可以通过以下邮箱申请查阅、更正或删除您的数据：",
+    notice: "本网站发布的内容、视觉素材和识别标志均受保护。未经 BADSAL & FILS OKIKIOLA 事先许可，禁止复制或使用。"
+  },
+  ar: {
+    title: "الإشعار القانوني والخصوصية",
+    intro: "المعلومات القانونية ومبادئ معالجة الطلبات المرسلة عبر هذا الموقع.",
+    legal: "المعلومات القانونية", privacy: "الخصوصية", company: "الشركة", address: "العنوان",
+    text: "تُستخدم المعلومات المرسلة عبر نموذج طلب العرض حصراً للرد على طلبك التجاري ومتابعته. ولا تُباع أو تُنقل إلى أطراف ثالثة لأغراض تجارية. يمكنك طلب الوصول إلى بياناتك أو تصحيحها أو حذفها عبر مراسلتنا على:",
+    notice: "المحتوى والمرئيات والعلامات المميزة المنشورة على هذا الموقع محمية. ويُحظر أي نسخ أو استخدام دون موافقة مسبقة من BADSAL & FILS OKIKIOLA."
+  }
+}[locale];
+---
+<Base locale={locale} dict={dict} path="/mentions-legales" title={copy.title + " — BADSAL & FILS OKIKIOLA"} description={copy.intro}>
+  <PageHero locale={locale} homeLabel={dict.common.breadcrumbHome} breadcrumb={copy.title} title={copy.title} sub={copy.intro} />
+  <section class="legal-page section-pad"><div class="container legal-inner">
+    <article><span>01</span><h2>{copy.legal}</h2><dl><div><dt>{copy.company}</dt><dd>BADSAL &amp; FILS OKIKIOLA Sarl</dd></div><div><dt>RCCM</dt><dd>{site.rccm}</dd></div><div><dt>IFU</dt><dd>{site.ifu}</dd></div><div><dt>{copy.address}</dt><dd>{site.addressLines.join(", ")}</dd></div><div><dt>Email</dt><dd><a href={"mailto:" + site.email}>{site.email}</a></dd></div></dl></article>
+    <article><span>02</span><h2>{copy.privacy}</h2><p>{copy.text} <a href={"mailto:" + site.email}>{site.email}</a>.</p><p>{copy.notice}</p></article>
+  </div></section>
+</Base>
+<style>
+.legal-page{background:var(--color-bg);padding-top:82px;padding-bottom:92px}.legal-inner{max-width:900px;display:grid;grid-template-columns:1fr 1fr;gap:70px}.legal-inner article{border-top:2px solid var(--color-accent);padding-top:20px}.legal-inner span{color:var(--color-accent);font-size:11px;font-weight:800;letter-spacing:.14em}.legal-inner h2{margin:11px 0 22px;color:var(--color-primary-deep);font-size:28px;line-height:1.12}.legal-inner p{color:var(--color-text-muted);font-size:15px;line-height:1.72}.legal-inner a{color:var(--color-primary);font-weight:700}dl{margin:0}dl div{padding:11px 0;border-bottom:1px solid var(--color-border)}dt{color:var(--color-text-faint);font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}dd{margin:5px 0 0;color:var(--color-text);font-size:14px}@media(max-width:720px){.legal-inner{grid-template-columns:1fr;gap:42px}}
+</style>

@@ -1,0 +1,166 @@
+/* BADSAL & FILS OKIKIOLA — feuille de styles globale du site.
+   Tokens repris à l'identique du design system (styles.css + tokens/).
+   La police Montserrat est chargée dans le <head> du layout. */
+
+:root {
+  /* ---- Brand ---- */
+  /* Vert éclairci d'un cran (retour client : le vert trop sombre tirait vers le noir).
+     Le vert reste institutionnel mais se lit franchement comme du vert ; l'or est inchangé.
+     L'ancien vert #1b4332 devient la nuance "deep" (accents sombres). */
+  --color-primary: #123d5a;
+  --color-primary-deep: #081f35;
+  --color-primary-soft: #245d7c;
+  --color-primary-tint: #e8f0f4;
+
+  --color-accent: #b66e26;
+  --color-accent-deep: #91551c;
+  --color-accent-soft: #d9a55a;
+  --color-accent-tint: #f4e9da;
+
+  /* ---- Neutrals ---- */
+  --color-bg: #f5f4f0;
+  /* Surfaces adoucies (blanc cassé plutôt que blanc pur) — l'en-tête reste, lui,
+     en blanc pur (épinglé dans Header.astro). --color-logo-bg = ivoire chaud
+     posé derrière le logo (pastille du pied de page, carte "Qui sommes-nous"). */
+  --color-surface: #fbfaf7;
+  --color-logo-bg: #f7f3eb;
+  --color-surface-alt: #e9e9e5;
+  --color-text: #172630;
+  --color-text-muted: #52606a;
+  --color-text-faint: #77828a;
+  --color-text-invert: #fafaf8;
+  --color-border: #e5e5e0;
+  --color-border-strong: #cfcfc8;
+
+  /* ---- Channels ---- */
+  --color-whatsapp: #25d366;
+  --color-whatsapp-deep: #1ebe5a;
+  --color-wechat: #07c160;
+  --color-wechat-deep: #06a954;
+
+  /* ---- Type ---- */
+  --font-display: "Montserrat", -apple-system, "Segoe UI", system-ui, sans-serif;
+  --font-body: "Montserrat", -apple-system, "Segoe UI", system-ui, sans-serif;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* ---- Effects ---- */
+  --radius-xs: 3px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 2px 6px rgba(26, 26, 26, 0.06);
+  --shadow-md: 0 8px 24px rgba(26, 26, 26, 0.08);
+  --shadow-lg: 0 18px 48px rgba(20, 48, 38, 0.12);
+  --ease-standard: cubic-bezier(0.2, 0.6, 0.2, 1);
+  --dur-base: 200ms;
+
+  /* ---- Layout ---- */
+  --container-max: 1200px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* compense l'en-tête collant lors du saut vers une ancre (#ananas, etc.) */
+  scroll-padding-top: 100px;
+  /* filet de sécurité : aucune barre de défilement horizontale sur mobile */
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Conteneur centré, identique aux maquettes (max 1200px, gouttières 48px). */
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+
+/* Le canvas des maquettes était figé à 1440px ; ici le rendu desktop reste
+   identique mais la page devient fluide. La gouttière passe de 48px à 20px
+   sur mobile. */
+.section-pad {
+  padding-left: 48px;
+  padding-right: 48px;
+}
+
+@media (max-width: 700px) {
+  .section-pad {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+a {
+  color: inherit;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ============ Arabe (RTL) ============
+   La direction droite-à-gauche est portée par dir="rtl" sur <html> (mise en page
+   miroir automatique). Ici : police arabe + neutralisation du letter-spacing. */
+html[lang="ar"] {
+  /* Amiri = serif arabe élégant (titres) ; Noto Sans Arabic = corps lisible. */
+  --font-display: "Amiri", "Noto Naskh Arabic", Georgia, serif;
+  --font-body: "Noto Sans Arabic", "Cairo", system-ui, sans-serif;
+}
+/* L'espacement des lettres casse l'écriture arabe cursive (lettres liées) :
+   on le neutralise partout sur les pages arabes. */
+html[lang="ar"] * {
+  letter-spacing: normal !important;
+}
+/* La virgule décimale latine et les puces "·" restent correctes en RTL ;
+   on garde les nombres/identifiants (RCCM, IFU, téléphones) en LTR pour la lisibilité. */
+html[lang="ar"] .f-badge-legal,
+html[lang="ar"] .rccm-num,
+html[lang="ar"] .cc-mail-link {
+  direction: ltr;
+  unicode-bidi: embed;
+}
+
+/* ---- Finitions RTL : on inverse les flèches directionnelles ----
+   (→ devient ←, › devient ‹) — règles globales qui atteignent les classes scopées. */
+html[dir="rtl"] .rtl-arrow,
+html[dir="rtl"] .proj-arrow,
+html[dir="rtl"] .crumb .sep {
+  display: inline-block;
+  transform: scaleX(-1);
+}
+
+/* ---- Finitions RTL : on miroite les halos dorés décoratifs ---- */
+html[dir="rtl"] .glow-a { right: auto; left: 40px; }
+html[dir="rtl"] .glow-b { left: auto; right: -80px; }
+html[dir="rtl"] .hero-glow { right: auto; left: 60px; }
+html[dir="rtl"] .banner-glow { left: auto; right: -80px; }
+html[dir="rtl"] .identity-photo .glow { right: auto; left: -50px; }
+html[dir="rtl"] .cta-glow { right: auto; left: -60px; }
+html[dir="rtl"] .cc-glow { right: auto; left: -50px; }
